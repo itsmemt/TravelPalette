@@ -20,6 +20,11 @@
     flex-direction: column;
     gap: 30px;
   }
+  .innerBox h1{
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-align: center;
+  }
   .innerBox h1,.innerBox p{
     text-align: center;
   }

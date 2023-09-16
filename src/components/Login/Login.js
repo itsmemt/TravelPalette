@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css";
 import InputControl from "../InputControl/InputControl";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContext";
 
 function Login() {
+   const { SignIn } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -18,7 +21,7 @@ function Login() {
       return;
     }
     setErrorMsg("");
-    setSubmitButtonDisabled(true);
+    // setSubmitButtonDisabled(true);
     try {
       const response = await fetch(
         "https://www.travelpalette.me/api/v1/auth/signin",
@@ -30,8 +33,16 @@ function Login() {
           body: JSON.stringify(values),
         }
       );
+        const data = await response.json()
       if (response.ok) {
-        setSuccessMsg('You are LoggedIn Successfully')
+        localStorage.setItem("loginUser", JSON.stringify(data.data));
+        SignIn();
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
+        // navigate("/dashboard")
+        // setSuccessMsg('You are LoggedIn Successfully')
+        setSuccessMsg(response.message)
       } else {
         setErrorMsg("Please enter correct username or password");
       }
@@ -43,12 +54,12 @@ function Login() {
     <div className={styles.container}>
       <div className={styles.innerBox}>
         <h1 className={styles.heading} >Welcome Back!</h1>
-        <b>
-            Already have an account?{" "}
             <span>
+            Need an account?{" "}
+            <b>
               <Link to="/signup">Sign up</Link>
+            </b>
             </span>
-          </b>
 
         <InputControl
           label="Email"

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styles from "./Signup.module.css";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate } from "react-router-dom";
 import InputControl from "../InputControl/InputControl";
 
 function Signup() {
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -32,6 +33,7 @@ function Signup() {
         }
       );
       if (response.ok) {
+        navigate("/login")
         setSuccessMsg('User Created Successfully')
       } else {
         setErrorMsg("Something Went Wrong");
@@ -51,9 +53,9 @@ function Signup() {
   return (
     <div className={styles.container}>
       <div className={styles.innerBox}>
-        <h1 className={styles.heading}>Welcome Back!</h1>
+        <h1 className={styles.heading}>Create an Account</h1>
         <p>
-          Need an account?{" "}
+          Already have an account?{" "}
           <b>
             <Link to="/login">Sign In</Link>
           </b>
