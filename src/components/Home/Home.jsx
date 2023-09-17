@@ -1,10 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // import Card from "./card";
-import { Grid, GridItem } from "@chakra-ui/react";
-import { Button, Box } from "@chakra-ui/react";
-import { Heading } from "@chakra-ui/react";
-import { Input } from "@chakra-ui/react";
+import { Grid, GridItem,Button,Box ,Heading,Input} from "@chakra-ui/react";
 import { AtSignIcon } from '@chakra-ui/icons'
 import { AiFillHome, AiOutlinePlus } from 'react-icons/ai';
 import { BsFillPeopleFill } from 'react-icons/bs';
@@ -114,7 +111,7 @@ function Home() {
         <GridItem w="100%" h="auto" bg="">
           <Grid templateColumns="repeat(1, 1fr)" gap={6}>
             <GridItem w="100%" h="16" bg="">
-              <Grid templateColumns="78% 15% 5%" gap={0} mt={2} ml={2}>
+              <Grid templateColumns="65% 15% 15% 5%" gap={0} mt={2} ml={2}>
                 <GridItem w="100%" h="16" bg="">
                   <Heading as="h3" size="lg">
                     Home
@@ -122,7 +119,12 @@ function Home() {
                 </GridItem>
                 <GridItem w="100%" h="16" bg="">
                   <Button style={{ background:"black", color:"white", borderRadius:"30px", width:"90%", margin:"auto"}} size="md">
-                  <Link to="/login"> Sign In/Up</Link>
+                  <Link to="/signup"> Sign Up</Link>
+                  </Button>
+                </GridItem>
+                <GridItem w="100%" h="16" bg="">
+                  <Button style={{ background:"black", color:"white", borderRadius:"30px", width:"90%", margin:"auto"}} size="md">
+                  <Link to="/login"> Sign In</Link>
                   </Button>
                 </GridItem>
                 <GridItem w="100%" h="16" bg="">
