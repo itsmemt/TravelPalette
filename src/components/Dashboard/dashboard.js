@@ -1,40 +1,29 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../Context/AuthContext";
+import React, { useState ,useContext} from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Button,
-  useDisclosure,
   Grid,
   GridItem,
   Box,
   Heading,
   Input,
 } from "@chakra-ui/react";
-import AddInspiration from "./addInspiration";
 import { AtSignIcon } from "@chakra-ui/icons";
 import { AiFillHome, AiOutlinePlus } from "react-icons/ai";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { GiStoneWall } from "react-icons/gi";
 import { GoSmiley } from "react-icons/go";
-import { useContext } from "react";
-import { AuthContext } from "../Context/AuthContext";
-
-// import { BsSearch } from 'react-icons/bs';
+import AddInspiration from "./addInspiration";
+import AddTrip from "./addTrip";
 function Dashboard() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  let {currentUser, SignOut} = useContext(AuthContext);
   const navigate = useNavigate();
-
+  let { currentUser, SignOut } = useContext(AuthContext);
+  const [addInspirationOpen, setAddInspirationOpen] = useState(false);
+  const [addTripOpen, setAddTripOpen] = useState(false);
   function Logout() {
     SignOut();
     navigate("/");
-    console.log('hi');
   }
   return (
     <>
@@ -93,7 +82,7 @@ function Dashboard() {
                   </GridItem>
                   <GridItem w="100%" h="10" bg="">
                     <Button
-                      onClick={onOpen}
+                      onClick={()=>setAddInspirationOpen(true)}
                       size="md"
                       style={{
                         background: "black",
@@ -121,6 +110,7 @@ function Dashboard() {
                   </GridItem>
                   <GridItem w="100%" h="10" bg="">
                     <Button
+                      onClick={()=>setAddTripOpen(true)}
                       style={{
                         background: "black",
                         color: "white",
@@ -138,7 +128,7 @@ function Dashboard() {
                           color: "white",
                         }}
                       />
-                      <Link to="/login">Create New Trip</Link>
+                      Create New Trip
                     </Button>
                   </GridItem>
                 </Grid>
@@ -155,7 +145,9 @@ function Dashboard() {
                     </Heading>
                   </GridItem>
                   <GridItem w="100%" h="16" bg="">
-                  <Heading as='h3' size='lg'>Hi , {currentUser.name}</Heading>
+                    <Heading as="h3" size="lg">
+                      Hi , {currentUser.name}
+                    </Heading>
                   </GridItem>
                   <GridItem w="100%" h="16" bg="">
                     <Button
@@ -351,7 +343,7 @@ function Dashboard() {
           </GridItem>
         </Grid>
       </Box>
-      <Modal
+      {/* <Modal
         isCentered
         onClose={onClose}
         isOpen={isOpen}
@@ -363,16 +355,31 @@ function Dashboard() {
           <ModalHeader>Add Inspiration</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <AddInspiration/>
+            <AddInspiration />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="gray" mr={3} onClick={onClose} style={{borderRadius:'20px'}}>
+            <Button
+              colorScheme="gray"
+              mr={3}
+              onClick={onClose}
+              style={{ borderRadius: "20px" }}
+            >
               Cancel
             </Button>
-            <Button style={{backgroundColor:'#111',color:'#fff',borderRadius:'20px'}}>Save</Button>
+            <Button
+              style={{
+                backgroundColor: "#111",
+                color: "#fff",
+                borderRadius: "20px",
+              }}
+            >
+              Save
+            </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal> */}
+      <AddInspiration isOpen={addInspirationOpen} onClose={() => setAddInspirationOpen(false)} />
+      <AddTrip isOpen={addTripOpen} onClose={() => setAddTripOpen(false)} />
     </>
   );
 }

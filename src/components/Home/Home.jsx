@@ -1,16 +1,29 @@
-import React from "react";
+import React ,{useState} from "react";
 import { Link } from "react-router-dom";
-// import Card from "./card";
 import { Grid, GridItem,Button,Box ,Heading,Input} from "@chakra-ui/react";
 import { AtSignIcon } from '@chakra-ui/icons'
 import { AiFillHome, AiOutlinePlus } from 'react-icons/ai';
 import { BsFillPeopleFill } from 'react-icons/bs';
 import { GiStoneWall } from 'react-icons/gi';
 import { GoSmiley } from 'react-icons/go';
+import SignIn from "../SignIn/signIn";
+import SignUp from "../Signup/register";
 // import { BsSearch } from 'react-icons/bs';
 
 
 function Home() {
+  const [signInOpen, setSignInOpen] = useState(false);
+  const [signUpOpen, setSignUpInOpen] = useState(false);
+  const openSignInModal = () => {
+    setSignInOpen(true);
+    setSignUpInOpen(false);
+  };
+
+  const openSignUpModal = () => {
+    setSignInOpen(false);
+    setSignUpInOpen(true);
+  };
+
   const cards = [
     {
       id: "1",
@@ -78,7 +91,7 @@ function Home() {
                 <GridItem w="100%" h="10" bg="" style={{display:"flex"}}>
                   <BsFillPeopleFill style={{fontSize:"20px", marginRight:"10px", marginTop:"2px"}} />
                   <Heading as="h3" size="md">
-                    My Uploads
+                    My Inspirations
                   </Heading>
                 </GridItem>
                 <GridItem w="100%" h="10" bg="" style={{display:"flex"}}>
@@ -118,13 +131,21 @@ function Home() {
                   </Heading>
                 </GridItem>
                 <GridItem w="100%" h="16" bg="">
-                  <Button style={{ background:"black", color:"white", borderRadius:"30px", width:"90%", margin:"auto"}} size="md">
-                  <Link to="/signup"> Sign Up</Link>
+                  <Button 
+                   onClick={openSignUpModal}
+                  style={{ background:"black", color:"white", borderRadius:"30px", width:"90%", margin:"auto"}}
+                  size="md">
+                  Sign Up
+                  {/* <Link to="/signup"> Sign Up</Link> */}
                   </Button>
                 </GridItem>
                 <GridItem w="100%" h="16" bg="">
-                  <Button style={{ background:"black", color:"white", borderRadius:"30px", width:"90%", margin:"auto"}} size="md">
-                  <Link to="/login"> Sign In</Link>
+                  <Button 
+                  onClick={openSignInModal}
+                  style={{ background:"black", color:"white", borderRadius:"30px", width:"90%", margin:"auto"}} 
+                  size="md">
+                    Sign In
+                  {/* <Link to="/login"> Sign In</Link> */}
                   </Button>
                 </GridItem>
                 <GridItem w="100%" h="16" bg="">
@@ -206,6 +227,8 @@ function Home() {
           </Grid>
         </GridItem>
       </Grid>
+      <SignIn isOpen={signInOpen} onClose={() => setSignInOpen(false)} openSignUpModal={openSignUpModal}/>
+      <SignUp isOpen={signUpOpen} onClose={() => setSignUpInOpen(false)}  openSignInModal={openSignInModal}/>
     </Box>
   );
 }

@@ -12,12 +12,10 @@ import {
   ModalOverlay,
   ModalCloseButton,
   ModalHeader,
-  ModalFooter,
-  Select
-
+  ModalFooter
 } from "@chakra-ui/react";
 
-function AddInspiration({ isOpen, onClose }) {
+function AddTrip({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
     title: null,
     location: null,
@@ -34,7 +32,7 @@ function AddInspiration({ isOpen, onClose }) {
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Inspiration</ModalHeader>
+        <ModalHeader>Create Trip</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box>
@@ -68,11 +66,11 @@ function AddInspiration({ isOpen, onClose }) {
                   setFormData({ ...formData, description: e.target.value })
                 }
               />
-              <Select placeholder="Search or Select tags">
+              {/* <Select placeholder="Search or Select tags">
           <option value="option1">Food</option>
           <option value="option2">Travel</option>
           <option value="option3">Dining</option>
-        </Select>
+        </Select> */}
             </Stack>
           </Box>
         </ModalBody>
@@ -100,4 +98,4 @@ function AddInspiration({ isOpen, onClose }) {
   );
 }
 
-export default AddInspiration;
+export default AddTrip;
