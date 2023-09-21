@@ -14,14 +14,12 @@ function Login() {
   });
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
-  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   const handleSubmission = async () => {
     if (!values.email || !values.password) {
       setErrorMsg("*Please fill all the mandatory fields.");
       return;
     }
     setErrorMsg("");
-    // setSubmitButtonDisabled(true);
     try {
       const response = await fetch(
         "https://www.travelpalette.me/api/v1/auth/signin",
@@ -79,7 +77,7 @@ function Login() {
         <div className={styles.footer}>
           <b className={styles.success}>{successMsg}</b>
           <b className={styles.error}>{errorMsg}</b>
-          <button disabled={submitButtonDisabled} onClick={handleSubmission}>
+          <button onClick={handleSubmission}>
             Login
           </button>
         </div>

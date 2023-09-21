@@ -43,11 +43,9 @@ function Signup() {
     }
   };
   const handleGoogleLogin = async ()=>{
-    console.log('hi');
       // try {
       //     const posts = await fetch(" https://www.travelpalette.me/api/v1/auth/google")
       //   } catch(err){
-      //     console.log(err)
       //   }
   }
   return (

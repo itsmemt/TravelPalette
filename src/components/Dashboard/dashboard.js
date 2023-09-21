@@ -16,6 +16,7 @@ import { GiStoneWall } from "react-icons/gi";
 import { GoSmiley } from "react-icons/go";
 import AddInspiration from "./addInspiration";
 import AddTrip from "./addTrip";
+
 function Dashboard() {
   const navigate = useNavigate();
   let { currentUser, SignOut } = useContext(AuthContext);
@@ -343,41 +344,6 @@ function Dashboard() {
           </GridItem>
         </Grid>
       </Box>
-      {/* <Modal
-        isCentered
-        onClose={onClose}
-        isOpen={isOpen}
-        motionPreset="slideInBottom"
-        closeOnOverlayClick={false}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Add Inspiration</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <AddInspiration />
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="gray"
-              mr={3}
-              onClick={onClose}
-              style={{ borderRadius: "20px" }}
-            >
-              Cancel
-            </Button>
-            <Button
-              style={{
-                backgroundColor: "#111",
-                color: "#fff",
-                borderRadius: "20px",
-              }}
-            >
-              Save
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal> */}
       <AddInspiration isOpen={addInspirationOpen} onClose={() => setAddInspirationOpen(false)} />
       <AddTrip isOpen={addTripOpen} onClose={() => setAddTripOpen(false)} />
     </>

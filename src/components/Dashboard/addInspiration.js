@@ -13,17 +13,51 @@ import {
   ModalCloseButton,
   ModalHeader,
   ModalFooter,
-  Select
-
+  Select,
+  HStack,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  Tooltip
 } from "@chakra-ui/react";
 
 function AddInspiration({ isOpen, onClose }) {
+  const [tags, setTags] = useState([]);
   const [formData, setFormData] = useState({
     title: null,
+    content: null,
     location: null,
     description: "",
+    tags: tags,
   });
-
+  function handleSelectedTags(e) {
+    setTags([...tags, e.target.value]);
+  }
+  const tagList = [
+    "Accommodation",
+    "Dining",
+    "Museum/Art",
+    "Shopping",
+    "Landmark",
+    "Attraction",
+    "Coffee",
+    "Drink",
+    "Activity",
+    "Adventure",
+    "Nature",
+    "Beach",
+    "Historical",
+    "Nightlife",
+    "Festival/Event",
+    "Local Cuisine",
+    "Scenic View",
+    "Cultural Experience",
+    "Outdoor",
+    "Entertainment",
+  ];
+  function clearTag(index) {
+    setTags([...tags.slice(0, index), ...tags.slice(index + 1, tags.length)]);
+  }
   return (
     <Modal
       isCentered
@@ -68,11 +102,30 @@ function AddInspiration({ isOpen, onClose }) {
                   setFormData({ ...formData, description: e.target.value })
                 }
               />
-              <Select placeholder="Search or Select tags">
-          <option value="option1">Food</option>
-          <option value="option2">Travel</option>
-          <option value="option3">Dining</option>
-        </Select>
+              <HStack spacing={4}>
+                {tags.map((data, index) => (
+                  <Tag
+                    size="md"
+                    key={index}
+                    borderRadius="full"
+                    variant="solid"
+                    colorScheme="cyan"
+                  >
+                    <Tooltip label={data}>
+                      <TagLabel>{data}</TagLabel>
+                    </Tooltip>
+                    <TagCloseButton onClick={() => clearTag(index)} />
+                  </Tag>
+                ))}
+              </HStack>
+              <Select
+                placeholder="Search or Select tags"
+                onChange={(e) => handleSelectedTags(e)}
+              >
+                {tagList.map((tag) => (
+                  <option value={tag}>{tag}</option>
+                ))}
+              </Select>
             </Stack>
           </Box>
         </ModalBody>

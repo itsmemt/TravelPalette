@@ -13,16 +13,18 @@ import {
   Box,
   Link,
   Modal,
+  Spinner,
   useToast,
   ModalBody,
-  ModalContent,
   ModalOverlay,
+  ModalContent,
   ModalCloseButton,
 } from "@chakra-ui/react";
 
 function SignUp({ isOpen, onClose ,openSignInModal}) {
   const toast = useToast();
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [signUpData, setSignUpData] = useState({
     name: "",
     email: "",
@@ -32,6 +34,7 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
   const emailError=signUpData.name==="";
   const passwordError=signUpData.name==="";
   const handleSignUp = async () => {
+    setLoading(true);
       if (!signUpData.name || !signUpData.email || !signUpData.password) {
         toast({
             description: "*Please fill all the mandatory fields.",
@@ -54,6 +57,7 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
           );
       const data = await response.json();
       if (response.ok) {
+        setLoading(false);
         localStorage.setItem("loginUser", JSON.stringify(data.data));
         setTimeout(() => {
           toast({
@@ -67,6 +71,7 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
         }, 1000);
         onClose();
       } else {
+        setLoading(false);
         toast({
             description: "Please enter correct or valid data.",
             status: 'error',
@@ -75,6 +80,7 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
           });
       }
     } catch (error) {
+      setLoading(false);
         toast({
             description: "Something went wrong.Try Again.",
             status: 'error',
@@ -156,17 +162,27 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
                 )}
               </FormControl>
               <Box style={{display:"flex", alignItems:'center',justifyContent:'center'}}>
-              <Button
-                onClick={handleSignUp}
-                style={{
-                  background: "black",
-                  color: "white",
-                  borderRadius: "20px",
-                  width: "50%",
-                }}
-              >
-                SignUp
-              </Button>
+              {!loading ? (
+                   <Button
+                   onClick={handleSignUp}
+                   style={{
+                     background: "black",
+                     color: "white",
+                     borderRadius: "20px",
+                     width: "50%",
+                   }}
+                 >
+                   SignUp
+                 </Button>
+                ) : (
+                  <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="voilet.500"
+                    size="xl"
+                  />
+                )}
               </Box>
             </Stack>
           </Box>
