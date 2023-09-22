@@ -31,8 +31,8 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
     password: "",
   });
   const nameError=signUpData.name==="";
-  const emailError=signUpData.name==="";
-  const passwordError=signUpData.name==="";
+  const emailError=signUpData.email==="";
+  const passwordError=signUpData.password==="";
   const handleSignUp = async () => {
     setLoading(true);
       if (!signUpData.name || !signUpData.email || !signUpData.password) {
@@ -71,11 +71,16 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
         }, 1000);
         onClose();
       } else {
+        setSignUpData({
+          name: "",
+          email: "",
+          password: "",
+        });
         setLoading(false);
         toast({
-            description: "Please enter correct or valid data.",
+            description: "Please enter correct or in valid format.",
             status: 'error',
-            duration: 2000,
+            duration: 5000,
             isClosable: true,
           });
       }
@@ -84,7 +89,7 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
         toast({
             description: "Something went wrong.Try Again.",
             status: 'error',
-            duration: 2000,
+            duration: 5000,
             isClosable: true,
           });
       console.error("An error occurred:", error);
@@ -116,6 +121,7 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
                   onChange={(e) =>
                     setSignUpData({ ...signUpData, name: e.target.value })
                   }
+                  disabled={loading}
                 />
                 {nameError ? (
                   <FormErrorMessage>Name is required.</FormErrorMessage>
@@ -131,6 +137,7 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
                   onChange={(e) =>
                     setSignUpData({ ...signUpData, email: e.target.value })
                   }
+                  disabled={loading}
                 />
                 {emailError ? (
                   <FormErrorMessage>Email is required.</FormErrorMessage>
@@ -148,6 +155,7 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
                   onChange={(e) =>
                     setSignUpData({ ...signUpData, password: e.target.value })
                   }
+                  disabled={loading}
                 />
                 <InputRightElement width="4.5rem">
                   <Button h="1.75rem" size="sm" onClick={() => setShow(!show)}>

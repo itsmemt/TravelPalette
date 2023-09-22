@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import travelPaletteLogo from "../Images/paletteLogo.png";
 import {
   Grid,
   GridItem,
@@ -8,17 +9,16 @@ import {
   Heading,
   Input,
   InputLeftElement,
-  InputGroup
+  InputGroup,
+  HStack,
+  Tag,
+  TagLabel,
+  Image,
 } from "@chakra-ui/react";
-import { AtSignIcon } from "@chakra-ui/icons";
-import { AiOutlinePlus } from "react-icons/ai";
-import { BsFillPeopleFill } from "react-icons/bs";
-import { GiStoneWall } from "react-icons/gi";
-import { GoSmiley } from "react-icons/go";
-import SignIn from "../SignIn/signIn";
-import SignUp from "../Signup/register";
-import { getAllInspiration } from "../Api/getInspiration";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getAllInspiration } from "../Api/getInspiration";
+import SignUp from "../Signup/register";
+import SignIn from "../SignIn/signIn";
 
 function Home() {
   const [signInOpen, setSignInOpen] = useState(false);
@@ -34,7 +34,7 @@ function Home() {
   };
   const getAllInspirations = async () => {
     const response = await getAllInspiration();
-    // console.log("API response:", response);
+    console.log("API response:", response);
   };
   const cards = [
     {
@@ -49,7 +49,7 @@ function Home() {
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAXDwDTL9If0oh2yHUzszeaojlGA40peJ2k0dfHjAuftndenj4CrpBzC6fsdaxqtjjGuw&usqp=CAU",
       title: "Trip to Japan",
-      heading: "Daba do",
+      heading: "Tokyo",
     },
     {
       id: "3",
@@ -90,43 +90,35 @@ function Home() {
           bg=""
           style={{ borderRight: "1px solid grey" }}
         >
+          <HStack style={{ marginTop: "10px",marginBottom:'20px' }}>
+            <Image
+              src={travelPaletteLogo}
+              alt="Travel Palette"
+              style={{ backgroundColor: "black" }}
+            />
+            <Heading as="h3" size="lg">
+              TravelPalette.me
+            </Heading>
+          </HStack>
           <Grid templateColumns="repeat(1, 1fr)" gap={6}>
-            <GridItem w="100%" h="16" bg="">
-              <Heading as="h2" size="lg" style={{ marginTop: "10px" }}>
-                <AtSignIcon w={8} h={8} />
-                TravelPalette.me
-              </Heading>
-            </GridItem>
             <GridItem w="100%" h="550" bg="" style={{ marginLeft: "15px" }}>
               <Grid templateColumns="repeat(1, 1fr)" gap={2}>
                 <GridItem w="100%" h="10" bg="" style={{ display: "flex" }}>
                   <Heading as="h3" size="md">
-                  <FontAwesomeIcon icon="fa-solid fa-house" />
-                    Home
+                    <FontAwesomeIcon icon="fa-solid fa-house" />
+                    &nbsp; Home
                   </Heading>
                 </GridItem>
                 <GridItem w="100%" h="10" bg="" style={{ display: "flex" }}>
-                  <BsFillPeopleFill
-                    style={{
-                      fontSize: "20px",
-                      marginRight: "10px",
-                      marginTop: "2px",
-                    }}
-                  />
                   <Heading as="h3" size="md" onClick={getAllInspirations}>
-                    My Inspirations
+                    <FontAwesomeIcon icon="fa-solid fa-user-group" />
+                    &nbsp; My Inspirations
                   </Heading>
                 </GridItem>
                 <GridItem w="100%" h="10" bg="" style={{ display: "flex" }}>
-                  <GiStoneWall
-                    style={{
-                      fontSize: "20px",
-                      marginRight: "10px",
-                      marginTop: "2px",
-                    }}
-                  />
                   <Heading as="h3" size="md">
-                    How it works
+                    <FontAwesomeIcon icon="fa-solid fa-keyboard" />
+                    &nbsp; How it works
                   </Heading>
                 </GridItem>
                 <GridItem w="100%" h="10" bg="">
@@ -141,7 +133,7 @@ function Home() {
                     }}
                   >
                     <FontAwesomeIcon icon="fa-solid fa-plus" />
-                    <Link to="/login">Add Inspiration</Link>
+                    <Link to="/login"> &nbsp;&nbsp;Add Inspiration</Link>
                   </Button>
                 </GridItem>
                 <GridItem w="100%" h="10" bg="">
@@ -161,7 +153,7 @@ function Home() {
                     size="md"
                   >
                     <FontAwesomeIcon icon="fa-solid fa-plus" />
-                    <Link to="/login">Create New Trip</Link>
+                    <Link to="/login">&nbsp;&nbsp;Create New Trip</Link>
                   </Button>
                 </GridItem>
               </Grid>
@@ -210,7 +202,10 @@ function Home() {
                   </Button>
                 </GridItem>
                 <GridItem w="100%" h="16" bg="">
-                  <GoSmiley style={{ fontSize: "45px" }} />
+                  <FontAwesomeIcon
+                    style={{ fontSize: "40px" }}
+                    icon="fa-solid fa-face-smile"
+                  />
                 </GridItem>
               </Grid>
             </GridItem>
@@ -225,10 +220,10 @@ function Home() {
                   </InputGroup>
                 </GridItem>
                 <GridItem w="100%" h="10" bg="">
-                <InputGroup>
-                  <Input placeholder="Filter by Tags" size="md" />
+                  <InputGroup>
+                    <Input placeholder="Filter by Tags" size="md" />
                     <InputLeftElement pointerEvents="none">
-                    <FontAwesomeIcon icon="fa-solid fa-tags" />
+                      <FontAwesomeIcon icon="fa-solid fa-tags" />
                     </InputLeftElement>
                   </InputGroup>
                 </GridItem>
@@ -237,74 +232,21 @@ function Home() {
                     Popular Searches
                   </Heading>
                 </GridItem>
-                <GridItem w="140%" h="10" bg="">
-                  <Button
-                    style={{
-                      background: "black",
-                      color: "white",
-                      borderRadius: "30px",
-                      width: "90%",
-                      margin: "auto",
-                      fontSize: "12px",
-                    }}
-                    size="md"
-                  >
-                    <AiOutlinePlus
-                      style={{
-                        fontSize: "12px",
-                        marginRight: "10px",
-                        marginTop: "2px",
-                        color: "white",
-                      }}
-                    />{" "}
-                    Outdoors
-                  </Button>
-                </GridItem>
-                <GridItem w="150%" h="10" bg="">
-                  <Button
-                    style={{
-                      background: "black",
-                      color: "white",
-                      borderRadius: "30px",
-                      width: "90%",
-                      margin: "auto",
-                      fontSize: "12px",
-                    }}
-                    size="md"
-                  >
-                    <AiOutlinePlus
-                      style={{
-                        fontSize: "12px",
-                        marginRight: "10px",
-                        marginTop: "2px",
-                        color: "white",
-                      }}
-                    />{" "}
-                    Adventure
-                  </Button>
-                </GridItem>
-                <GridItem w="100%" h="10" bg="">
-                  <Button
-                    style={{
-                      background: "black",
-                      color: "white",
-                      borderRadius: "30px",
-                      width: "90%",
-                      margin: "auto",
-                      fontSize: "12px",
-                    }}
-                    size="md"
-                  >
-                    <AiOutlinePlus
-                      style={{
-                        fontSize: "12px",
-                        marginRight: "10px",
-                        marginTop: "2px",
-                        color: "white",
-                      }}
-                    />{" "}
-                    Food
-                  </Button>
+                <GridItem w="300%" h="10" bg="">
+                  <HStack spacing={4}>
+                    {["Outdoor", "Food", "Dining"].map((item, index) => (
+                      <Tag
+                        size="lg"
+                        key={index}
+                        variant="subtle"
+                        colorScheme="gray"
+                        style={{ borderRadius: "20px" }}
+                      >
+                        <FontAwesomeIcon icon="fa-solid fa-plus" />
+                        <TagLabel> &nbsp;{item}</TagLabel>
+                      </Tag>
+                    ))}
+                  </HStack>
                 </GridItem>
               </Grid>
             </GridItem>

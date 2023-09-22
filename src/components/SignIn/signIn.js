@@ -76,9 +76,13 @@ function SignInFn({ isOpen, onClose, openSignUpModal }) {
           });
         }, 1000);
       } else {
+        setSignInData({
+          email: "",
+          password: "",
+        });
         setLoading(false);
         toast({
-          description: "Please enter valid Credentials.",
+          description: "Incorrect Email or Password.",
           status: "error",
           duration: 2000,
           isClosable: true,
@@ -119,6 +123,7 @@ function SignInFn({ isOpen, onClose, openSignUpModal }) {
                   onChange={(e) =>
                     setSignInData({ ...signInData, email: e.target.value })
                   }
+                  disabled={loading}
                 />
                 {emailError ? (
                   <FormErrorMessage>Email is required.</FormErrorMessage>
@@ -136,6 +141,7 @@ function SignInFn({ isOpen, onClose, openSignUpModal }) {
                     onChange={(e) =>
                       setSignInData({ ...signInData, password: e.target.value })
                     }
+                    disabled={loading}
                   />
                   <InputRightElement width="4.5rem">
                     <Button
