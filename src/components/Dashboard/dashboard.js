@@ -1,15 +1,25 @@
-import { AuthContext } from "../Context/AuthContext";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Grid, GridItem, Box, Heading, Input } from "@chakra-ui/react";
-import { AtSignIcon } from "@chakra-ui/icons";
-import { AiFillHome, AiOutlinePlus } from "react-icons/ai";
-import { BsFillPeopleFill } from "react-icons/bs";
-import { GiStoneWall } from "react-icons/gi";
-import { GoSmiley } from "react-icons/go";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getAllInspiration } from "../Api/getInspiration";
+import { AuthContext } from "../Context/AuthContext";
 import AddInspiration from "./addInspiration";
 import AddTrip from "./addTrip";
-import { getAllInspiration } from "../Api/getInspiration";
+import {
+  InputLeftElement,
+  InputGroup,
+  GridItem,
+  TagLabel,
+  Heading,
+  HStack,
+  Button,
+  Image,
+  Input,
+  Grid,
+  Box,
+  Tag,
+} from "@chakra-ui/react";
+import travelPaletteLogo from "../Images/paletteLogo.png";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -22,9 +32,7 @@ function Dashboard() {
   }
   const getAllInspirations = async () => {
     const response = await getAllInspiration();
-
-    console.log(response);
-    // console.log("API response:", response);
+    console.log("API response:", response);
   };
   return (
     <>
@@ -36,52 +44,38 @@ function Dashboard() {
             bg=""
             style={{ borderRight: "1px solid grey" }}
           >
+            <HStack style={{ marginTop: "10px", marginBottom: "20px" }}>
+              <Image
+                src={travelPaletteLogo}
+                alt="Travel Palette"
+                style={{ backgroundColor: "black" }}
+              />
+              <Heading as="h3" size="lg">
+                TravelPalette.me
+              </Heading>
+            </HStack>
             <Grid templateColumns="repeat(1, 1fr)" gap={6}>
-              <GridItem w="100%" h="16" bg="">
-                <Heading as="h2" size="lg" style={{ marginTop: "10px" }}>
-                  <AtSignIcon w={8} h={8} />
-                  TravelPalette.me
-                </Heading>
-              </GridItem>
               <GridItem w="100%" h="550" bg="" style={{ marginLeft: "15px" }}>
                 <Grid templateColumns="repeat(1, 1fr)" gap={2}>
                   <GridItem w="100%" h="10" bg="" style={{ display: "flex" }}>
-                    <AiFillHome
-                      style={{
-                        fontSize: "20px",
-                        marginRight: "10px",
-                        marginTop: "2px",
-                      }}
-                    />
-                    <Heading as="h3" size="md">
-                      Home
-                    </Heading>
+                    <Button size="md">
+                      <FontAwesomeIcon icon="fa-solid fa-house" />
+                      &nbsp; Home
+                    </Button>
                   </GridItem>
                   <GridItem w="100%" h="10" bg="" style={{ display: "flex" }}>
-                    <BsFillPeopleFill
-                      style={{
-                        fontSize: "20px",
-                        marginRight: "10px",
-                        marginTop: "2px",
-                      }}
-                    />
-                    <Heading as="h3" size="md" onClick={getAllInspirations}>
-                      My Inspirations
-                    </Heading>
+                    <Button size="md" onClick={() => getAllInspirations()}>
+                      <FontAwesomeIcon icon="fa-solid fa-user-group" />
+                      &nbsp; My Inspirations
+                    </Button>
                   </GridItem>
                   <GridItem w="100%" h="10" bg="" style={{ display: "flex" }}>
-                    <GiStoneWall
-                      style={{
-                        fontSize: "20px",
-                        marginRight: "10px",
-                        marginTop: "2px",
-                      }}
-                    />
-                    <Heading as="h3" size="md">
-                      How it works
-                    </Heading>
+                    <Button size="md">
+                      <FontAwesomeIcon icon="fa-solid fa-keyboard" />
+                      &nbsp; How it works
+                    </Button>
                   </GridItem>
-                  <GridItem w="100%" h="10" bg="">
+                  <GridItem w="100%" h="10" bg="" style={{ marginTop: "25px" }}>
                     <Button
                       onClick={() => setAddInspirationOpen(true)}
                       size="md"
@@ -93,15 +87,8 @@ function Dashboard() {
                         margin: "auto",
                       }}
                     >
-                      <AiOutlinePlus
-                        style={{
-                          fontSize: "20px",
-                          marginRight: "10px",
-                          marginTop: "2px",
-                          color: "white",
-                        }}
-                      />
-                      Add Inspiration
+                      <FontAwesomeIcon icon="fa-solid fa-plus" />
+                      &nbsp;&nbsp;Add Inspiration
                     </Button>
                   </GridItem>
                   <GridItem w="100%" h="10" bg="">
@@ -121,15 +108,8 @@ function Dashboard() {
                       }}
                       size="md"
                     >
-                      <AiOutlinePlus
-                        style={{
-                          fontSize: "20px",
-                          marginRight: "10px",
-                          marginTop: "2px",
-                          color: "white",
-                        }}
-                      />
-                      Create New Trip
+                      <FontAwesomeIcon icon="fa-solid fa-plus" />
+                      &nbsp;&nbsp;Create New Trip
                     </Button>
                   </GridItem>
                 </Grid>
@@ -165,181 +145,50 @@ function Dashboard() {
                       Logout
                     </Button>
                   </GridItem>
-                  <GridItem w="100%" h="16" bg="">
-                    <GoSmiley style={{ fontSize: "45px" }} />
-                  </GridItem>
+                  <GridItem w="100%" h="16" bg=""></GridItem>
                 </Grid>
               </GridItem>
               <GridItem w="100%" h="14" bg="">
                 <Grid templateColumns="25% 22% 20% 10% 10% 10%" gap={2}>
                   <GridItem w="100%" h="10" bg="">
-                    <Input placeholder="Search by Inspiration" size="lg" />
+                    <InputGroup>
+                      <Input placeholder="Search by Inspiration" size="md" />
+                      <InputLeftElement pointerEvents="none">
+                        <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
+                      </InputLeftElement>
+                    </InputGroup>
                   </GridItem>
                   <GridItem w="100%" h="10" bg="">
-                    <Input placeholder="Filter by Tags" size="lg" />
+                    <InputGroup>
+                      <Input placeholder="Filter by Tags" size="md" />
+                      <InputLeftElement pointerEvents="none">
+                        <FontAwesomeIcon icon="fa-solid fa-tags" />
+                      </InputLeftElement>
+                    </InputGroup>
                   </GridItem>
                   <GridItem w="100%" h="10" bg="">
                     <Heading as="h3" size="md" style={{ marginTop: "10px" }}>
                       Popular Searches
                     </Heading>
                   </GridItem>
-                  <GridItem w="140%" h="10" bg="">
-                    <Button
-                      style={{
-                        background: "black",
-                        color: "white",
-                        borderRadius: "30px",
-                        width: "90%",
-                        margin: "auto",
-                        fontSize: "12px",
-                      }}
-                      size="md"
-                    >
-                      <AiOutlinePlus
-                        style={{
-                          fontSize: "12px",
-                          marginRight: "10px",
-                          marginTop: "2px",
-                          color: "white",
-                        }}
-                      />{" "}
-                      Outdoors
-                    </Button>
-                  </GridItem>
-                  <GridItem w="150%" h="10" bg="">
-                    <Button
-                      style={{
-                        background: "black",
-                        color: "white",
-                        borderRadius: "30px",
-                        width: "90%",
-                        margin: "auto",
-                        fontSize: "12px",
-                      }}
-                      size="md"
-                    >
-                      <AiOutlinePlus
-                        style={{
-                          fontSize: "12px",
-                          marginRight: "10px",
-                          marginTop: "2px",
-                          color: "white",
-                        }}
-                      />{" "}
-                      Adventure
-                    </Button>
-                  </GridItem>
-                  <GridItem w="100%" h="10" bg="">
-                    <Button
-                      style={{
-                        background: "black",
-                        color: "white",
-                        borderRadius: "30px",
-                        width: "90%",
-                        margin: "auto",
-                        fontSize: "12px",
-                      }}
-                      size="md"
-                    >
-                      <AiOutlinePlus
-                        style={{
-                          fontSize: "12px",
-                          marginRight: "10px",
-                          marginTop: "2px",
-                          color: "white",
-                        }}
-                      />{" "}
-                      Food
-                    </Button>
+                  <GridItem w="300%" h="10" bg="">
+                    <HStack spacing={4}>
+                      {["Outdoor", "Food", "Dining"].map((item, index) => (
+                        <Tag
+                          size="lg"
+                          key={index}
+                          variant="subtle"
+                          colorScheme="gray"
+                          style={{ borderRadius: "20px" }}
+                        >
+                          <FontAwesomeIcon icon="fa-solid fa-plus" />
+                          <TagLabel> &nbsp;{item}</TagLabel>
+                        </Tag>
+                      ))}
+                    </HStack>
                   </GridItem>
                 </Grid>
               </GridItem>
-              {/* <GridItem w="100%" h="auto" bg="">
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(4,1fr)",
-                    gap: "10px",
-                  }}
-                >
-                  {cards.map((card) => (
-                    <div
-                      key={cards.id}
-                      style={{
-                        border: "1px solid black",
-                        display: "grid",
-                        gridTemplateColumns: "repeat(1,1fr",
-                        height: "auto",
-                        width: "auto",
-                        borderRadius: "30px",
-                      }}
-                    >
-                      <img
-                        src={card.image}
-                        alt="product"
-                        style={{
-                          height: "400px",
-                          width: "100%",
-                          borderTopLeftRadius: "30px",
-                          borderTopRightRadius: "30px",
-                        }}
-                      />
-                      <Box
-                        style={{
-                          borderTopRightRadius: "30px",
-                          borderTopLeftRadius: "30px",
-                          border: "1px solid black",
-                          height: "auto",
-                        }}
-                      >
-                        <Heading
-                          as="h2"
-                          style={{ textAlign: "center", fontSize: "1.5rem" }}
-                        >
-                          {card.title}
-                        </Heading>
-                      </Box>
-                      <Box
-                        style={{
-                          borderRadius: "30px",
-                          border: "1px solid black",
-                          height: "auto",
-                          padding: "10px",
-                          display: "flex",
-                          gap: "10px",
-                        }}
-                      >
-                        <Button
-                          style={{
-                            background: "black",
-                            color: "white",
-                            borderRadius: "30px",
-                            width: "90%",
-                            margin: "auto",
-                            fontSize: "12px",
-                          }}
-                          size="md"
-                        >
-                          {card.heading}
-                        </Button>
-                        <Button
-                          style={{
-                            background: "black",
-                            color: "white",
-                            borderRadius: "30px",
-                            width: "90%",
-                            margin: "auto",
-                            fontSize: "12px",
-                          }}
-                          size="md"
-                        >
-                          {card.heading}
-                        </Button>
-                      </Box>
-                    </div>
-                  ))}
-                </div>
-              </GridItem> */}
             </Grid>
           </GridItem>
         </Grid>

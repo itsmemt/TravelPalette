@@ -48,6 +48,7 @@ function SignInFn({ isOpen, onClose, openSignUpModal }) {
       return;
     }
     try {
+<<<<<<< Updated upstream
       const response = await fetch("http://localhost:8080/api/v1/auth/signin", {
         method: "POST",
         headers: {
@@ -56,6 +57,18 @@ function SignInFn({ isOpen, onClose, openSignUpModal }) {
         body: JSON.stringify(signInData),
         credentials: "include",
       });
+=======
+      const response = await fetch(
+        "http://localhost:8080/api/v1/auth/signin",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(signInData),
+        }
+      );
+>>>>>>> Stashed changes
       const data = await response.json();
       if (response.ok) {
         onClose();

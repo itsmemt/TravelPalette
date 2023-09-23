@@ -46,7 +46,7 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
     }
     try {
         const response = await fetch(
-            "https://www.travelpalette.me/api/v1/auth/signup",
+            "http://localhost:8080/api/v1/auth/signup",
             {
               method: "POST",
               headers: {

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import travelPaletteLogo from "../Images/paletteLogo.png";
 import {
   Grid,
@@ -16,7 +15,6 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getAllInspiration } from "../Api/getInspiration";
 import SignUp from "../Signup/register";
 import SignIn from "../SignIn/signIn";
 
@@ -31,10 +29,6 @@ function Home() {
   const openSignUpModal = () => {
     setSignInOpen(false);
     setSignUpInOpen(true);
-  };
-  const getAllInspirations = async () => {
-    const response = await getAllInspiration();
-    console.log("API response:", response);
   };
   const cards = [
     {
@@ -80,7 +74,6 @@ function Home() {
       heading: "Beaches",
     },
   ];
-
   return (
     <Box>
       <Grid templateColumns="22% 78%" gap={2}>
@@ -90,7 +83,7 @@ function Home() {
           bg=""
           style={{ borderRight: "1px solid grey" }}
         >
-          <HStack style={{ marginTop: "10px",marginBottom:'20px' }}>
+          <HStack style={{ marginTop: "10px", marginBottom: "20px" }}>
             <Image
               src={travelPaletteLogo}
               alt="Travel Palette"
@@ -104,25 +97,26 @@ function Home() {
             <GridItem w="100%" h="550" bg="" style={{ marginLeft: "15px" }}>
               <Grid templateColumns="repeat(1, 1fr)" gap={2}>
                 <GridItem w="100%" h="10" bg="" style={{ display: "flex" }}>
-                  <Heading as="h3" size="md">
+                  <Button size="md">
                     <FontAwesomeIcon icon="fa-solid fa-house" />
-                    Home
-                  </Heading>
+                    &nbsp; Home
+                  </Button>
                 </GridItem>
                 <GridItem w="100%" h="10" bg="" style={{ display: "flex" }}>
-                  <Heading as="h3" size="md" onClick={getAllInspirations}>
+                  <Button size="md" onClick={openSignInModal}>
                     <FontAwesomeIcon icon="fa-solid fa-user-group" />
                     &nbsp; My Inspirations
-                  </Heading>
+                  </Button>
                 </GridItem>
                 <GridItem w="100%" h="10" bg="" style={{ display: "flex" }}>
-                  <Heading as="h3" size="md">
+                  <Button size="md">
                     <FontAwesomeIcon icon="fa-solid fa-keyboard" />
                     &nbsp; How it works
-                  </Heading>
+                  </Button>
                 </GridItem>
-                <GridItem w="100%" h="10" bg="">
+                <GridItem w="100%" h="10" bg="" style={{ marginTop: "25px" }}>
                   <Button
+                    onClick={openSignInModal}
                     size="md"
                     style={{
                       background: "black",
@@ -133,7 +127,7 @@ function Home() {
                     }}
                   >
                     <FontAwesomeIcon icon="fa-solid fa-plus" />
-                    <Link to="/login"> &nbsp;&nbsp;Add Inspiration</Link>
+                    &nbsp;&nbsp;Add Inspiration
                   </Button>
                 </GridItem>
                 <GridItem w="100%" h="10" bg="">
@@ -143,6 +137,7 @@ function Home() {
                 </GridItem>
                 <GridItem w="100%" h="10" bg="">
                   <Button
+                    onClick={openSignInModal}
                     style={{
                       background: "black",
                       color: "white",
@@ -153,7 +148,7 @@ function Home() {
                     size="md"
                   >
                     <FontAwesomeIcon icon="fa-solid fa-plus" />
-                    <Link to="/login">&nbsp;&nbsp;Create New Trip</Link>
+                    &nbsp;&nbsp;Create New Trip
                   </Button>
                 </GridItem>
               </Grid>
@@ -270,8 +265,6 @@ function Home() {
                       borderRadius: "30px",
                     }}
                   >
-                    {/* <div  style={{height:"100%", width:"30%"}}><h1 style={{height:"100%", width:"100%"}}>{card.title}</h1></div>
-                <div style={{height:"100%", width:"70%"}}><img src={card.image} alt="product" style={{height:"100%"}}/></div> */}
                     <img
                       src={card.image}
                       alt="product"
@@ -335,7 +328,6 @@ function Home() {
                       </Button>
                     </Box>
                   </div>
-                  // <Card key={card.id} title={card.title} image={card.image} heading={card.heading}/>
                 ))}
               </div>
             </GridItem>
