@@ -1,14 +1,7 @@
 import { AuthContext } from "../Context/AuthContext";
-import React, { useState ,useContext} from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Button,
-  Grid,
-  GridItem,
-  Box,
-  Heading,
-  Input,
-} from "@chakra-ui/react";
+import { Button, Grid, GridItem, Box, Heading, Input } from "@chakra-ui/react";
 import { AtSignIcon } from "@chakra-ui/icons";
 import { AiFillHome, AiOutlinePlus } from "react-icons/ai";
 import { BsFillPeopleFill } from "react-icons/bs";
@@ -16,6 +9,7 @@ import { GiStoneWall } from "react-icons/gi";
 import { GoSmiley } from "react-icons/go";
 import AddInspiration from "./addInspiration";
 import AddTrip from "./addTrip";
+import { getAllInspiration } from "../Api/getInspiration";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -26,6 +20,12 @@ function Dashboard() {
     SignOut();
     navigate("/");
   }
+  const getAllInspirations = async () => {
+    const response = await getAllInspiration();
+
+    console.log(response);
+    // console.log("API response:", response);
+  };
   return (
     <>
       <Box>
@@ -65,7 +65,7 @@ function Dashboard() {
                         marginTop: "2px",
                       }}
                     />
-                    <Heading as="h3" size="md">
+                    <Heading as="h3" size="md" onClick={getAllInspirations}>
                       My Inspirations
                     </Heading>
                   </GridItem>
@@ -83,7 +83,7 @@ function Dashboard() {
                   </GridItem>
                   <GridItem w="100%" h="10" bg="">
                     <Button
-                      onClick={()=>setAddInspirationOpen(true)}
+                      onClick={() => setAddInspirationOpen(true)}
                       size="md"
                       style={{
                         background: "black",
@@ -111,7 +111,7 @@ function Dashboard() {
                   </GridItem>
                   <GridItem w="100%" h="10" bg="">
                     <Button
-                      onClick={()=>setAddTripOpen(true)}
+                      onClick={() => setAddTripOpen(true)}
                       style={{
                         background: "black",
                         color: "white",
@@ -344,7 +344,10 @@ function Dashboard() {
           </GridItem>
         </Grid>
       </Box>
-      <AddInspiration isOpen={addInspirationOpen} onClose={() => setAddInspirationOpen(false)} />
+      <AddInspiration
+        isOpen={addInspirationOpen}
+        onClose={() => setAddInspirationOpen(false)}
+      />
       <AddTrip isOpen={addTripOpen} onClose={() => setAddTripOpen(false)} />
     </>
   );

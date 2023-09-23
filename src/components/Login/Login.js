@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 
 function Login() {
-   const { SignIn } = useContext(AuthContext);
+  const { SignIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
@@ -22,16 +22,17 @@ function Login() {
     setErrorMsg("");
     try {
       const response = await fetch(
-        "https://www.travelpalette.me/api/v1/auth/signin",
+        "http://localhost:8080/api/v1/auth/signin",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(values),
+          credentials: "include",
         }
       );
-        const data = await response.json()
+      const data = await response.json();
       if (response.ok) {
         localStorage.setItem("loginUser", JSON.stringify(data.data));
         SignIn();
@@ -40,7 +41,7 @@ function Login() {
         }, 2000);
         // navigate("/dashboard")
         // setSuccessMsg('You are LoggedIn Successfully')
-        setSuccessMsg(response.message)
+        setSuccessMsg(response.message);
       } else {
         setErrorMsg("Please enter correct username or password");
       }
@@ -51,13 +52,13 @@ function Login() {
   return (
     <div className={styles.container}>
       <div className={styles.innerBox}>
-        <h1 className={styles.heading} >Welcome Back!</h1>
-            <span>
-            Need an account?{" "}
-            <b>
-              <Link to="/signup">Sign up</Link>
-            </b>
-            </span>
+        <h1 className={styles.heading}>Welcome Back!</h1>
+        <span>
+          Need an account?{" "}
+          <b>
+            <Link to="/signup">Sign up</Link>
+          </b>
+        </span>
 
         <InputControl
           label="Email"
@@ -77,9 +78,7 @@ function Login() {
         <div className={styles.footer}>
           <b className={styles.success}>{successMsg}</b>
           <b className={styles.error}>{errorMsg}</b>
-          <button onClick={handleSubmission}>
-            Login
-          </button>
+          <button onClick={handleSubmission}>Login</button>
         </div>
       </div>
     </div>

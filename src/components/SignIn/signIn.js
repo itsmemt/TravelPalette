@@ -48,16 +48,14 @@ function SignInFn({ isOpen, onClose, openSignUpModal }) {
       return;
     }
     try {
-      const response = await fetch(
-        "https://www.travelpalette.me/api/v1/auth/signin",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(signInData),
-        }
-      );
+      const response = await fetch("http://localhost:8080/api/v1/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signInData),
+        credentials: "include",
+      });
       const data = await response.json();
       if (response.ok) {
         onClose();

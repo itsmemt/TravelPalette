@@ -106,7 +106,7 @@ function Home() {
                 <GridItem w="100%" h="10" bg="" style={{ display: "flex" }}>
                   <Heading as="h3" size="md">
                     <FontAwesomeIcon icon="fa-solid fa-house" />
-                    &nbsp; Home
+                    Home
                   </Heading>
                 </GridItem>
                 <GridItem w="100%" h="10" bg="" style={{ display: "flex" }}>
