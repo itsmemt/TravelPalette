@@ -1,10 +1,11 @@
-export async function getAllInspiration() {
+export async function saveInspiration(payload) {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/inspiration", {
-        method: "GET",
+      const response = await fetch("http://localhost:8080/api/v1/inspiration/create", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(payload),
         credentials: "include",
       });
       if (!response.ok) {
@@ -15,4 +16,3 @@ export async function getAllInspiration() {
       throw new Error("API request error: " + error.message);
     }
   }
-  

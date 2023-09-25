@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import {
   Box,
-  Textarea,
+  Heading,
   Input,
   Stack,
+  HStack,
   Divider,
   Button,
   Modal,
@@ -12,18 +13,42 @@ import {
   ModalOverlay,
   ModalCloseButton,
   ModalHeader,
-  ModalFooter
+  ModalFooter,
+  useToast
 } from "@chakra-ui/react";
+import { saveTrip } from "../Api/saveTrip";
 
 function AddTrip({ isOpen, onClose }) {
+  const toast = useToast();
   const [formData, setFormData] = useState({
-    title: null,
-    location: null,
-    description: "",
+    name: null,
+    startDate: null,
+    endDate: null,
+    location: null
   });
-
+  const handleSaveTrip = async () => {
+    const payload= formData;
+    console.log(formData);
+    const response = await saveTrip(payload);
+    if(response.status==='success'){
+      setFormData({
+        name: null,
+        startDate: null,
+        endDate: null,
+        location: null
+      })
+      onClose();
+      toast({
+        description:response.message,
+        status: response.status,
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <Modal
+      size='2xl'
       isCentered
       onClose={onClose}
       isOpen={isOpen}
@@ -38,39 +63,54 @@ function AddTrip({ isOpen, onClose }) {
           <Box>
             <Stack spacing={3}>
               <Input
-                placeholder="Add Title"
+                style={{ outline: "none", border: "none" }}
+                placeholder="New Trip Name"
                 size="md"
                 onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
+                  setFormData({ ...formData, name: e.target.value })
                 }
               />
               <Divider orientation="horizontal" />
-              <Input
-                placeholder="Add Location"
-                size="md"
-                onChange={(e) =>
-                  setFormData({ ...formData, location: e.target.value })
-                }
-              />
+              <HStack>
+                <Heading as="h6" size="sm">
+                  Where To ?
+                </Heading>
+                <Input
+                  style={{ width: "80%" }}
+                  placeholder="Ex: Shimla,India"
+                  size="md"
+                  onChange={(e) =>
+                    setFormData({ ...formData, location: e.target.value })
+                  }
+                />
+              </HStack>
               <Divider orientation="horizontal" />
-              <Input
-                placeholder="Add Link (Youtube, Instagram, Tiktok, Blog) (Optional)"
-                size="md"
-                type="file"
-              />
-              <Divider orientation="horizontal" />
-              <Textarea
-                placeholder="Add Details"
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-              />
-              {/* <Select placeholder="Search or Select tags">
-          <option value="option1">Food</option>
-          <option value="option2">Travel</option>
-          <option value="option3">Dining</option>
-        </Select> */}
+              <HStack>
+                <Heading as="h6" size="sm" style={{marginRight:'20px'}}>
+                  Dates_?
+                </Heading>
+                <Heading as="h6" size="sm" style={{marginRight:'20px'}}>
+                  Start
+                </Heading>
+                <Input
+                  type="date"
+                  size="md"
+                  value={formData.startDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, startDate: e.target.value })
+                  }
+                />
+                <Heading as="h6" size="sm" style={{marginRight:'20px'}}>
+                  End
+                </Heading>
+                <Input
+                  type="date"
+                  value={formData.endDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, endDate: e.target.value })
+                  }
+                />
+              </HStack>
             </Stack>
           </Box>
         </ModalBody>
@@ -84,6 +124,7 @@ function AddTrip({ isOpen, onClose }) {
             Cancel
           </Button>
           <Button
+          onClick={()=>handleSaveTrip()}
             style={{
               backgroundColor: "#111",
               color: "#fff",

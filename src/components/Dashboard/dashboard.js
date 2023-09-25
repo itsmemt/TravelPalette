@@ -20,19 +20,29 @@ import {
   Tag,
 } from "@chakra-ui/react";
 import travelPaletteLogo from "../Images/paletteLogo.png";
+import InpirationCard from "./InspirationCard";
+import { searchInspiration } from "../Api/searchInspiration";
 
 function Dashboard() {
   const navigate = useNavigate();
   let { currentUser, SignOut } = useContext(AuthContext);
   const [addInspirationOpen, setAddInspirationOpen] = useState(false);
   const [addTripOpen, setAddTripOpen] = useState(false);
+  const [inspirationData, setInspirationData] = useState([]);
+  const [searchData, setSearchData] = useState("");
   function Logout() {
     SignOut();
     navigate("/");
   }
   const getAllInspirations = async () => {
     const response = await getAllInspiration();
-    console.log("API response:", response);
+    setInspirationData(response.data);
+  };
+  const handleSearch = async (event) => {
+    if (event.key === "Enter") {
+      const response = await searchInspiration(searchData);
+      console.log(response);
+    }
   };
   return (
     <>
@@ -145,14 +155,26 @@ function Dashboard() {
                       Logout
                     </Button>
                   </GridItem>
-                  <GridItem w="100%" h="16" bg=""></GridItem>
+                  <GridItem w="100%" h="16" bg="">
+                  <FontAwesomeIcon
+                    style={{ fontSize: "40px" }}
+                    icon="fa-solid fa-face-smile"
+                  />
+                </GridItem>
                 </Grid>
               </GridItem>
               <GridItem w="100%" h="14" bg="">
                 <Grid templateColumns="25% 22% 20% 10% 10% 10%" gap={2}>
                   <GridItem w="100%" h="10" bg="">
                     <InputGroup>
-                      <Input placeholder="Search by Inspiration" size="md" />
+                      <Input
+                      type="search"
+                        placeholder="Search by Inspiration"
+                        size="md"
+                        value={searchData}
+                        onKeyPress={handleSearch}
+                        onChange={(e) =>setSearchData(e.target.value)}
+                      />
                       <InputLeftElement pointerEvents="none">
                         <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
                       </InputLeftElement>
@@ -160,7 +182,7 @@ function Dashboard() {
                   </GridItem>
                   <GridItem w="100%" h="10" bg="">
                     <InputGroup>
-                      <Input placeholder="Filter by Tags" size="md" />
+                      <Input placeholder="Filter by Tags" size="md" type="search"/>
                       <InputLeftElement pointerEvents="none">
                         <FontAwesomeIcon icon="fa-solid fa-tags" />
                       </InputLeftElement>
@@ -188,6 +210,9 @@ function Dashboard() {
                     </HStack>
                   </GridItem>
                 </Grid>
+              </GridItem>
+              <GridItem w="100%" bg="">
+                <InpirationCard inspirationData={inspirationData} />
               </GridItem>
             </Grid>
           </GridItem>

@@ -1,6 +1,6 @@
-export async function getAllInspiration() {
+export async function searchInspiration(searchParams) {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/inspiration", {
+      const response = await fetch(`http://localhost:8080/api/v1/tags/search?query=${searchParams}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -15,4 +15,3 @@ export async function getAllInspiration() {
       throw new Error("API request error: " + error.message);
     }
   }
-  

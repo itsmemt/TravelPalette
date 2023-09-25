@@ -18,20 +18,43 @@ import {
   Tag,
   TagCloseButton,
   TagLabel,
-  Tooltip
+  Tooltip,
+  useToast
 } from "@chakra-ui/react";
+import { saveInspiration } from "../Api/saveInspiration";
 
 function AddInspiration({ isOpen, onClose }) {
-  const [tags, setTags] = useState([]);
+  const toast = useToast();
+  const [tag, setTag] = useState([]);
   const [formData, setFormData] = useState({
     title: null,
     content: null,
     location: null,
     description: "",
-    tags: tags,
+    tags: [],
   });
+  const handleSaveInspiration = async () => {
+    const payload= {...formData,tags:tag}
+    const response = await saveInspiration(payload);
+    if(response.status==='success'){
+      setFormData({
+        title: null,
+        content: null,
+        location: null,
+        description: "",
+        tags: [],
+      })
+      onClose();
+      toast({
+        description:response.message,
+        status: response.status,
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
   function handleSelectedTags(e) {
-    setTags([...tags, e.target.value]);
+    setTag([...tag, e.target.value]);
   }
   const tagList = [
     "Accommodation",
@@ -56,7 +79,7 @@ function AddInspiration({ isOpen, onClose }) {
     "Entertainment",
   ];
   function clearTag(index) {
-    setTags([...tags.slice(0, index), ...tags.slice(index + 1, tags.length)]);
+    setTag([...tag.slice(0, index), ...tag.slice(index + 1, tag.length)]);
   }
   return (
     <Modal
@@ -92,7 +115,9 @@ function AddInspiration({ isOpen, onClose }) {
               <Input
                 placeholder="Add Link (Youtube, Instagram, Tiktok, Blog) (Optional)"
                 size="md"
-                type="file"
+                onChange={(e) =>
+                  setFormData({ ...formData, content: e.target.value })
+                }
               />
               <Divider orientation="horizontal" />
               <Textarea
@@ -103,13 +128,13 @@ function AddInspiration({ isOpen, onClose }) {
                 }
               />
               <HStack spacing={4}>
-                {tags.map((data, index) => (
+                {tag.map((data, index) => (
                   <Tag
-                    size="md"
+                    size="sm"
                     key={index}
                     borderRadius="full"
                     variant="solid"
-                    colorScheme="cyan"
+                    style={{ backgroundColor: "blueviolet"}}
                   >
                     <Tooltip label={data}>
                       <TagLabel>{data}</TagLabel>
@@ -130,15 +155,16 @@ function AddInspiration({ isOpen, onClose }) {
           </Box>
         </ModalBody>
         <ModalFooter>
-          <Button
+          {/* <Button
             colorScheme="gray"
             mr={3}
             onClick={onClose}
             style={{ borderRadius: "20px" }}
           >
             Cancel
-          </Button>
+          </Button> */}
           <Button
+            onClick={()=>handleSaveInspiration()}
             style={{
               backgroundColor: "#111",
               color: "#fff",
