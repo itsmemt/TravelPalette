@@ -1,6 +1,7 @@
 export async function getAllInspiration() {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/inspiration", {
+      console.log(process.env.REACT_APP_BASE_URL)
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/inspiration`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

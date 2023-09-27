@@ -21,7 +21,10 @@ import {
 } from "@chakra-ui/react";
 import travelPaletteLogo from "../Images/paletteLogo.png";
 import InpirationCard from "./InspirationCard";
-import { searchInspiration } from "../Api/searchInspiration";
+import {
+  searchInspiration,
+  searchInspirationByTags,
+} from "../Api/searchInspiration";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -30,6 +33,8 @@ function Dashboard() {
   const [addTripOpen, setAddTripOpen] = useState(false);
   const [inspirationData, setInspirationData] = useState([]);
   const [searchData, setSearchData] = useState("");
+  const [filterTags, setFilterTags] = useState("");
+  const [activeField, setActiveField] = useState(null);
   function Logout() {
     SignOut();
     navigate("/");
@@ -39,9 +44,14 @@ function Dashboard() {
     setInspirationData(response.data);
   };
   const handleSearch = async (event) => {
+    console.log(activeField)
     if (event.key === "Enter") {
-      const response = await searchInspiration(searchData);
-      console.log(response);
+      if (activeField === "inspiration") {
+        const response = await searchInspiration(searchData);
+        console.log(response);
+      } else if (activeField === "tags") {
+        const response = await searchInspirationByTags(filterTags);
+      }
     }
   };
   return (
@@ -156,11 +166,11 @@ function Dashboard() {
                     </Button>
                   </GridItem>
                   <GridItem w="100%" h="16" bg="">
-                  <FontAwesomeIcon
-                    style={{ fontSize: "40px" }}
-                    icon="fa-solid fa-face-smile"
-                  />
-                </GridItem>
+                    <FontAwesomeIcon
+                      style={{ fontSize: "40px" }}
+                      icon="fa-solid fa-face-smile"
+                    />
+                  </GridItem>
                 </Grid>
               </GridItem>
               <GridItem w="100%" h="14" bg="">
@@ -168,12 +178,14 @@ function Dashboard() {
                   <GridItem w="100%" h="10" bg="">
                     <InputGroup>
                       <Input
-                      type="search"
+                        type="search"
                         placeholder="Search by Inspiration"
                         size="md"
                         value={searchData}
                         onKeyPress={handleSearch}
-                        onChange={(e) =>setSearchData(e.target.value)}
+                        onChange={(e) => setSearchData(e.target.value)}
+                        onFocus={() => setActiveField("inspiration")}
+                        onBlur={() => setActiveField(null)}
                       />
                       <InputLeftElement pointerEvents="none">
                         <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
@@ -182,7 +194,18 @@ function Dashboard() {
                   </GridItem>
                   <GridItem w="100%" h="10" bg="">
                     <InputGroup>
-                      <Input placeholder="Filter by Tags" size="md" type="search"/>
+                      <Input
+                        placeholder="Filter by Tags"
+                        size="md"
+                        type="search"
+                        value={filterTags}
+                        onKeyPress={handleSearch}
+                        onChange={(e) => setFilterTags(e.target.value)}
+                        onFocus={() => {
+                          setActiveField("tags");
+                        }}
+                        onBlur={() => setActiveField(null)}
+                      />
                       <InputLeftElement pointerEvents="none">
                         <FontAwesomeIcon icon="fa-solid fa-tags" />
                       </InputLeftElement>
