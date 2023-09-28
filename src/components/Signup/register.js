@@ -46,7 +46,7 @@ function SignUp({ isOpen, onClose ,openSignInModal}) {
     }
     try {
         const response = await fetch(
-            "http://localhost:8080/api/v1/auth/signup",
+            `${process.env.REACT_APP_BASE_URL}/api/v1/auth/signup`,
             {
               method: "POST",
               headers: {

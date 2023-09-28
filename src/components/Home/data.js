@@ -64,43 +64,6 @@ const data = [
     location: "Lima, Peru",
     favourite: true,
   },
-
-  {
-    title: "NEW - Disfrutar in Barcelona: A Culinary Gem",
-    type: "LINK",
-    content:
-      "https://www.eater.com/worlds-50-best-restaurants-awards/23767356/the-worlds-50-best-restaurants-2023-the-list-so-far",
-    description:
-      "Ranked 2nd in the World's 50 Best Restaurants 2023 list, Disfrutar offers a unique dining experience in the heart of Barcelona.",
-    tags: ["Fine Dining", "Barcelona", "Gourmet", "Spanish Cuisine"],
-    location: "Barcelona, Spain",
-    favourite: true,
-  },
-
-  {
-    title: "NEW - Diverxo in Madrid: A Spanish Culinary Adventure",
-    type: "LINK",
-    content:
-      "https://www.cnn.com/travel/worlds-50-best-restaurants-2023/index.html",
-    description:
-      "Diverxo, ranked 3rd in the World's 50 Best Restaurants 2023 list, is a must-visit for those seeking a unique gastronomic journey in Madrid.",
-    tags: ["Fine Dining", "Madrid", "Gourmet", "Innovative Cuisine"],
-    location: "Madrid, Spain",
-    favourite: true,
-  },
-
-  {
-    title: "NEW - Asador Etxebarri: A Grilling Masterpiece in Atxondo",
-    type: "LINK",
-    content:
-      "https://www.usatoday.com/story/money/food/2023/06/22/worlds-50-best-restaurant-list-2023/70345912007/",
-    description:
-      "Asador Etxebarri, ranked 4th, is renowned for its grilling techniques. Experience the flavors of Spain in this iconic restaurant.",
-    tags: ["Fine Dining", "Grilling", "Spanish Cuisine", "Atxondo"],
-    location: "Atxondo, Spain",
-    favourite: true,
-  },
-
   {
     title: "Best Places to Travel in 2023 - Havana, Cuba",
     type: "LINK",
@@ -136,19 +99,6 @@ const data = [
     location: "Asheville, NC",
     favourite: true,
   },
-
-  {
-    title: "Keystone, CO: A Winter Wonderland",
-    type: "LINK",
-    content:
-      "https://www.instagram.com/reel/CmwKVg-BsOL/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==",
-    description:
-      "Keystone is a favorite destination for skiing in the winter or spring. The village offers everything you need for a perfect snowy getaway.",
-    tags: ["Keystone", "Skiing", "Winter", "Travel"],
-    location: "Keystone, CO",
-    favourite: true,
-  },
-
   {
     title: "Marrakech: A Blend of Culture and Vibrancy",
     type: "LINK",
@@ -159,28 +109,6 @@ const data = [
     tags: ["Marrakech", "Morocco", "Culture", "Nightlife"],
     location: "Marrakech, Morocco",
     favourite: true,
-  },
-
-  {
-    title: "The Floating Forest Experience in Cambodia",
-    type: "LINK",
-    content:
-      "https://www.instagram.com/reel/ChwZpqzjVa0/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA==",
-    description:
-      "Kayak through a mesmerizing flooded forest in Cambodia. Experience the tranquility of nature and get a glimpse of local life. A must-visit for nature enthusiasts.",
-    tags: ["Nature", "Kayaking", "Unique Experience"],
-    location: "Cambodia",
-    favourite: true,
-  },
-  {
-    title: "Northern Lights Viewing in Tromsø, Norway",
-    type: "LINK",
-    content: "https://www.tiktok.com/@itsjamiebiotch/video/7265784125754232110",
-    description:
-      "Witness the breathtaking Aurora Borealis in Tromsø, one of the best places in the world for this natural phenomenon. Don't forget to bring your camera! Troll Museum, Dog Sledding",
-    tags: ["Nature", "Aurora Borealis", "Must See", "Bucket List"],
-    location: "Tromsø, Norway",
-    favourite: true,
-  },
+  }
 ];
 export default data;
