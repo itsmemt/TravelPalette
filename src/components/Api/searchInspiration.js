@@ -10,7 +10,6 @@ export async function searchInspiration(searchParams) {
         credentials: "include",
       }
     );
-    console.log(response)
     if (!response.ok) {
       throw new Error("Something went Wrong.Try Again.");
     }
@@ -31,7 +30,6 @@ export async function searchInspirationByTags(searchParams) {
         credentials: "include",
       }
     );
-    console.log(response)
     if (!response.ok) {
       throw new Error("Something went Wrong.Try Again.");
     }

@@ -1,6 +1,5 @@
-export async function getAllInspiration() {
+export default async function getAllInspiration() {
     try {
-      console.log(process.env.REACT_APP_BASE_URL)
       const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/inspiration`, {
         method: "GET",
         headers: {

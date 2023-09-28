@@ -10,11 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function InpirationCard({ inspirationData }) {
-  console.log(
-    "https://www.youtube.com/watch?v=Y7_1rCuioeI"
-      .split("/watch?v=")[1]
-      ?.split("&")?.[0]
-  );
   const generateEmbedCode = (link) => {
     if (link.includes("youtube.com")) {
       // It's a YouTube link, extract the video ID
@@ -31,12 +26,16 @@ function InpirationCard({ inspirationData }) {
         // Construct the YouTube embed code
         return (
           <iframe
-            width="100%"
-            height="200px"
+            height="300px"
             src={`https://www.youtube.com/embed/${videoId}`}
             title="Embedded YouTube Video"
             frameBorder="0"
             allowFullScreen
+            style={{
+              height: "300px",
+              borderTopLeftRadius: "30px",
+              borderTopRightRadius: "30px",
+            }}
           ></iframe>
         );
       }
@@ -48,18 +47,17 @@ function InpirationCard({ inspirationData }) {
         // Construct the Instagram embed code
         return (
           <iframe
-            width="100%"
-            height="200px"
+            height="300px"
             src={`https://www.instagram.com/p/${postId}/embed`}
             title="Embedded Instagram post"
             frameBorder="0"
             allowFullScreen
+            style={{
+              height: "300px",
+              borderTopLeftRadius: "30px",
+              borderTopRightRadius: "30px",
+            }}
           ></iframe>
-          // <blockquote
-          //   className="instagram-media"
-          //   data-instgrm-permalink={`https://www.instagram.com/p/${postId}/`}
-          //   data-instgrm-version="13"
-          // ></blockquote>
         );
       }
     }
@@ -68,13 +66,11 @@ function InpirationCard({ inspirationData }) {
       <iframe
         src={link}
         title="Link Preview"
-        width="100%"
         height="400px"
         frameBorder="0"
         sandbox="allow-same-origin allow-scripts"
         style={{
-          height: "200px",
-          width: "100%",
+          height: "300px",
           borderTopLeftRadius: "30px",
           borderTopRightRadius: "30px",
         }}
@@ -87,6 +83,7 @@ function InpirationCard({ inspirationData }) {
         display: "grid",
         gridTemplateColumns: "repeat(3,1fr)",
         gap: "10px",
+        overflowY:'scroll'
       }}
     >
       {inspirationData.map((item) => (
@@ -95,10 +92,10 @@ function InpirationCard({ inspirationData }) {
           style={{
             border: "1px solid black",
             display: "grid",
-            gridTemplateColumns: "repeat(1,1fr",
-            width: "auto",
+            gridTemplateColumns: "repeat(1,1fr)",
             borderRadius: "30px",
-            height: "400px",
+            height: "500px",
+            maxWidth:'300px'
           }}
         >
           <div style={{ position: "relative" }}>
@@ -116,11 +113,11 @@ function InpirationCard({ inspirationData }) {
             </Link>
             {generateEmbedCode(item.content)}
           </div>
-          <Heading as="h3" style={{ textAlign: "center", fontSize: "1.5rem" }}>
+          <Heading as="h4" style={{ textAlign: "center", fontSize: "1.2rem" }}>
             {item.title}
           </Heading>
           <div
-            style={{ display: "flex", justifyContent: "center", gap: "5px" }}
+            style={{ display: "flex", justifyContent: "center", gap: "5px",overflowX:'scroll' }}
           >
             {item.tags.map((data, index) => (
               <Tag
@@ -150,7 +147,7 @@ function InpirationCard({ inspirationData }) {
                 background: "black",
                 color: "white",
                 borderRadius: "30px",
-                width: "90%",
+                width: "80%",
                 margin: "auto",
                 fontSize: "12px",
               }}

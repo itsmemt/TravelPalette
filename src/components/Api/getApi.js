@@ -1,11 +1,10 @@
-export async function saveInspiration(payload) {
+export default async function getApi(url) {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/inspiration/create`, {
-        method: "POST",
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}${url}`, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
         credentials: "include",
       });
       if (!response.ok) {
@@ -16,3 +15,4 @@ export async function saveInspiration(payload) {
       throw new Error("API request error: " + error.message);
     }
   }
+  

@@ -5,7 +5,6 @@ import PrivateRoute from "./components/PrivateRoute";
 import PageNotFound from "./components/pageNotFound";
 import Home from "./components/Home/Home";
 function App() {
-  console.log(process.env.BASE_URL);
   return (
     <Router>
     <Routes>
