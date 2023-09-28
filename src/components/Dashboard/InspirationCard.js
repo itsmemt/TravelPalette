@@ -23,7 +23,8 @@ function InpirationCard({ inspirationData }) {
         "https://www.youtube.com/watch?v=Y7_1rCuioeI"
           .split("/watch?v=")[1]
           ?.split("&")?.[0]
-      );
+      ); 
+      
       const videoIdMatch = link.match(/v=([a-zA-Z0-9_-]+)/);
       if (videoIdMatch) {
         const videoId = videoIdMatch[1];
