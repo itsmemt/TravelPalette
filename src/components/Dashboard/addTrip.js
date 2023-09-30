@@ -133,7 +133,7 @@ function AddTrip({ isOpen, onClose, selectedTripsData }) {
                 </Heading>
                 <Input
                   type="date"
-                  value={formData.startDate}
+                  value={formData.endDate}
                   onChange={(e) =>
                     setFormData({ ...formData, endDate: e.target.value })
                   }
