@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { saveTrip, updateTrip } from "../Api/saveTrip";
 
-function AddTrip({ isOpen, onClose, selectedTripsData }) {
+function AddTrip({ isOpen, onClose, selectedTripsData ,setTripChanges}) {
   const toast = useToast();
   const [formData, setFormData] = useState({
     name: null,
@@ -42,6 +42,7 @@ function AddTrip({ isOpen, onClose, selectedTripsData }) {
     const payload = formData;
     const response = await updateTrip(payload);
     if (response.status === "success") {
+      setTripChanges(Math.random());
       onClose();
       toast({
         description: response.message,
@@ -61,6 +62,7 @@ function AddTrip({ isOpen, onClose, selectedTripsData }) {
         endDate: null,
         location: null,
       });
+      setTripChanges(Math.random());
       onClose();
       toast({
         description: response.message,

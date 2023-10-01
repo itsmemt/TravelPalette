@@ -154,10 +154,12 @@ function Home() {
                   </Button>
                 </GridItem>
                 <GridItem w="100%" h="16" bg="">
-                  <FontAwesomeIcon
-                    style={{ fontSize: "40px" }}
-                    icon="fa-solid fa-face-smile"
-                  />
+                <Box  style={{backgroundColor:'black',border:'3px black solid',borderRadius:'90%',maxWidth:'max-content' }}>
+                    <FontAwesomeIcon
+                      style={{ fontSize: "40px",color:'white'}}
+                      icon="fa-solid fa-face-smile"
+                    />
+                    </Box>
                 </GridItem>
               </Grid>
             </GridItem>

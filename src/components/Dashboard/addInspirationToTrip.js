@@ -14,25 +14,18 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalBody,
   ModalCloseButton,
+  useToast
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InspirationCard from "./InspirationCard";
 import AddTrip from "./addTrip";
 import getInspiration from "../Api/getInspiration";
 import updateTrips from "../Api/updateTrips";
+import DeleteTrips from "../Api/deleteTrips";
 const generateEmbedCode = (link) => {
-  if (link.includes("youtube.com")) {
-    // It's a YouTube link, extract the video ID
-
-    console.log(
-      "https://www.youtube.com/watch?v=Y7_1rCuioeI"
-        .split("/watch?v=")[1]
-        ?.split("&")?.[0]
-    );
-
+  if (link?.includes("youtube.com")) {
     const videoIdMatch = link.match(/v=([a-zA-Z0-9_-]+)/);
     if (videoIdMatch) {
       const videoId = videoIdMatch[1];
@@ -52,7 +45,7 @@ const generateEmbedCode = (link) => {
         ></iframe>
       );
     }
-  } else if (link.includes("instagram.com")) {
+  } else if (link?.includes("instagram.com")) {
     // It's an Instagram link, extract the post ID
     const postMatch = link.match(/\/p\/([a-zA-Z0-9_-]+)/);
     if (postMatch) {
@@ -90,7 +83,8 @@ const generateEmbedCode = (link) => {
     ></iframe>
   );
 };
-function AddInspirationToTrip({ selectedTripsData, setSelectedTab }) {
+function AddInspirationToTrip({ selectedTripsData, setSelectedTab,setTripChanges }) {
+  const toast = useToast();
   const [updatedTrip, setUpdatedTrip] = useState(selectedTripsData.item);
   const [addTripOpen, setAddTripOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -98,8 +92,7 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab }) {
   const [selectedInspiration, setSelectedInspiration] = useState([]);
   const [dashboardTiles, setDashboardTiles] = useState([]);
   const handleInspirationClick = (inspiration) => {
-    // Toggle selected inspiration on click
-    if (selectedInspiration.includes(inspiration)) {
+    if (selectedInspiration?.includes(inspiration)) {
       setSelectedInspiration(
         selectedInspiration.filter((insp) => insp._id !== inspiration._id)
       );
@@ -110,33 +103,36 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab }) {
 
   const addSelectedTilesToDashboard = async (selectedTilesToAdd) => {
     setDashboardTiles([...dashboardTiles, ...selectedTilesToAdd]);
-    setSelectedInspiration([]); // Clear selectedTiles after adding
-    console.log(dashboardTiles);
+    setSelectedInspiration([]);
     const updatedTripData = await updateTrips(selectedTripsData._id, {
       item: selectedInspiration,
     });
-    console.log(updatedTripData);
     setUpdatedTrip([...updatedTrip, ...selectedTilesToAdd]);
-    console.log(updatedTrip.item);
-    // Close the modal
     setModalOpen(false);
   };
   const removeTileFromDashboard = (tileId) => {
     setDashboardTiles(dashboardTiles.filter((tile) => tile._id !== tileId));
   };
   useEffect(() => {
-    // Fetch inspiration data from API when modal is opened
     getInspiration()
       .then((data) => {
         setInspirations(data);
-        // console.log(inspirations);
       })
       .catch((error) => {
         console.error("Error fetching inspiration data: ", error);
       });
   }, [updatedTrip]);
 
-  const handleDelete = () => {
+  const handleDelete = async (id) => {
+    const response = await DeleteTrips(id)
+    if(response){
+      toast({
+        description: response.message,
+        status: response.status,
+        duration: 5000,
+        isClosable: true,
+      });
+    }
     setSelectedTab("Home");
   };
   function formatDate(inputDate) {
@@ -181,130 +177,153 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab }) {
           />
           <Spacer />
           <FontAwesomeIcon
-            onClick={() => handleDelete()}
+            onClick={() => handleDelete(selectedTripsData._id)}
             icon="fa-solid fa-trash"
             style={{ fontSize: "35px", color: "#2228", cursor: "pointer" }}
           />
         </HStack>
       </Flex>
 
-      {/* Modal */}
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} size="6xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Inspiration Data</ModalHeader>
-          <Button
-            onClick={() => addSelectedTilesToDashboard(selectedInspiration)}
-          >
-            ADD
-          </Button>
           <ModalCloseButton />
           <ModalBody>
-            {/* Render your inspiration data here */}
-            {inspirations?.data?.length > 0 ? (
-              inspirations.data.map((inspiration) => (
-                <div
-                  key={inspiration._id}
-                  onClick={() => handleInspirationClick(inspiration)}
-                  style={{
-                    border: selectedInspiration.includes(inspiration)
-                      ? "2px solid #00f"
-                      : "2px solid transparent",
-                    padding: "10px",
-                    cursor: "pointer",
-                    marginBottom: "10px",
-                    display: "flex", // Set display to flex
-                    alignItems: "center", // Align items vertically in the center
-                    justifyContent: "space-between",
-                  }}
+            <Box>
+              <Flex style={{ marginTop: "50px", marginBottom: "20px" }}>
+                <Heading
+                  as="h4"
+                  size="lg"
+                  style={{ textDecoration: "underline" }}
                 >
-                  <div
-                    key={inspiration._id}
-                    style={{
-                      border: "1px solid black",
-                      display: "grid",
-                      gridTemplateColumns: "repeat(1,1fr)",
-                      borderRadius: "30px",
-                      height: "500px",
-                      maxWidth: "300px",
-                    }}
-                  >
-                    <div style={{ position: "relative" }}>
-                      <Link
-                        href={inspiration.content}
-                        isExternal
-                        style={{
-                          position: "absolute",
-                          right: "15px",
-                          color: "blueviolet",
-                          fontSize: "2rem",
-                        }}
-                      >
-                        <FontAwesomeIcon icon="fa-solid fa-square-arrow-up-right" />
-                      </Link>
-                      {generateEmbedCode(inspiration.content)}
-                    </div>
-                    <Heading
-                      as="h4"
-                      style={{ textAlign: "center", fontSize: "1.2rem" }}
-                    >
-                      {inspiration.title}
-                    </Heading>
-                    <div
+                  Select Inspirations to Add to Trip
+                </Heading>
+                <Spacer />
+                <Button
+                  onClick={() =>
+                    addSelectedTilesToDashboard(selectedInspiration)
+                  }
+                >
+                  ADD
+                </Button>
+              </Flex>
+              <div
+                style={{
+                  padding: "10px",
+                  cursor: "pointer",
+                  marginBottom: "10px",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3,1fr)",
+                }}
+              >
+                {inspirations?.data?.length > 0 ? (
+                  inspirations.data?.map((inspiration) => (
+                    <Box
+                      key={inspiration._id}
                       style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        gap: "5px",
-                        overflowX: "scroll",
+                        border: selectedInspiration?.includes(inspiration)
+                          ? "2px solid #00f"
+                          : "2px solid transparent",
+                        display: "grid",
+                        gridTemplateColumns: "repeat(1,1fr)",
+                        padding: "2px",
+                        borderRadius: "30px",
                       }}
                     >
-                      {inspiration.tags.map((data, index) => (
-                        <Tag
-                          size="sm"
-                          key={index}
-                          borderRadius="full"
-                          variant="solid"
+                      <div key={inspiration._id}
+                       style={{
+                        height: "500px",
+                        maxWidth: "300px",
+                      }}>
+                        <div style={{ position: "relative" }}>
+                          <Link
+                            href={inspiration.content}
+                            isExternal
+                            style={{
+                              position: "absolute",
+                              right: "15px",
+                              color: "blueviolet",
+                              fontSize: "2rem",
+                            }}
+                          >
+                            <FontAwesomeIcon icon="fa-solid fa-square-arrow-up-right" />
+                          </Link>
+                          <FontAwesomeIcon
+                            icon="fa-solid fa-circle-check"
+                            style={{
+                              position: "absolute",
+                              right: "-35px",
+                              fontSize: "2rem",
+                              color: selectedInspiration?.includes(inspiration)
+                              ? "black"
+                              : "gray",
+                            }}
+                            onClick={() => handleInspirationClick(inspiration)}
+                          />
+                          {generateEmbedCode(inspiration.content)}
+                        </div>
+                        <Heading
+                          as="h4"
+                          style={{ textAlign: "center", fontSize: "1.2rem" }}
+                        >
+                          {inspiration.title}
+                        </Heading>
+                        <div
                           style={{
-                            backgroundColor: "blueviolet",
-                            height: "35px",
-                            marginBottom: "-20px",
+                            display: "flex",
+                            justifyContent: "center",
+                            gap: "5px",
+                            overflowX: "scroll",
                           }}
                         >
-                          <Tooltip label={data}>
-                            <TagLabel
+                          {inspiration.tags?.map((data, index) => (
+                            <Tag
+                              size="sm"
+                              key={index}
+                              borderRadius="full"
+                              variant="solid"
                               style={{
-                                paddingLeft: "10px",
-                                paddingRight: "10px",
+                                backgroundColor: "blueviolet",
+                                height: "35px",
+                                marginBottom: "-20px",
                               }}
                             >
-                              {data}
-                            </TagLabel>
-                          </Tooltip>
-                        </Tag>
-                      ))}
-                    </div>
-                    <HStack spacing={2}>
-                      <Button
-                        style={{
-                          background: "black",
-                          color: "white",
-                          borderRadius: "30px",
-                          width: "80%",
-                          margin: "auto",
-                          fontSize: "12px",
-                        }}
-                        size="md"
-                      >
-                        {inspiration.location}
-                      </Button>
-                    </HStack>
-                  </div>
-                </div>
-              ))
-            ) : (
-              // <InspirationCard inspirationData={inspirations.data} />
-              <p>No inspiration data available.</p>
-            )}
+                              <Tooltip label={data}>
+                                <TagLabel
+                                  style={{
+                                    paddingLeft: "10px",
+                                    paddingRight: "10px",
+                                  }}
+                                >
+                                  {data}
+                                </TagLabel>
+                              </Tooltip>
+                            </Tag>
+                          ))}
+                        </div>
+                        <HStack spacing={2}>
+                          <Button
+                            style={{
+                              background: "black",
+                              color: "white",
+                              borderRadius: "30px",
+                              width: "80%",
+                              margin: "auto",
+                              fontSize: "12px",
+                            }}
+                            size="md"
+                          >
+                            {inspiration.location}
+                          </Button>
+                        </HStack>
+                      </div>
+                    </Box>
+                  ))
+                ) : (
+                  <p>No inspiration data available.</p>
+                )}
+              </div>
+            </Box>
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -313,6 +332,7 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab }) {
         isOpen={addTripOpen}
         onClose={() => setAddTripOpen(false)}
         selectedTripsData={selectedTripsData}
+        setTripChanges={setTripChanges}
       />
       <Box>
         <HStack style={{ margin: "10px" }}>
@@ -344,15 +364,16 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab }) {
               />
             </Flex>
           </Flex>
-        </HStack>
+          </HStack>
         {updatedTrip?.length > 0 && (
           <InspirationCard inspirationData={updatedTrip} />
-        )}
+          )}
       </Box>
       <AddTrip
         isOpen={addTripOpen}
         onClose={() => setAddTripOpen(false)}
         selectedTripsData={selectedTripsData}
+        setTripChanges={setTripChanges}
       />
     </Box>
   );

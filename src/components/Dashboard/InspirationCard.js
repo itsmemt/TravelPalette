@@ -11,7 +11,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function InpirationCard({ inspirationData }) {
   const generateEmbedCode = (link) => {
-    if (link.includes("youtube.com")) {
+    if (link?.includes("youtube.com")) {
       // It's a YouTube link, extract the video ID
       const videoIdMatch = link.match(/v=([a-zA-Z0-9_-]+)/);
       if (videoIdMatch) {
@@ -32,7 +32,7 @@ function InpirationCard({ inspirationData }) {
           ></iframe>
         );
       }
-    } else if (link.includes("instagram.com")) {
+    } else if (link?.includes("instagram.com")) {
       // It's an Instagram link, extract the post ID
       const postMatch = link.match(/\/p\/([a-zA-Z0-9_-]+)/);
       if (postMatch) {
@@ -79,7 +79,7 @@ function InpirationCard({ inspirationData }) {
         overflowY:'scroll'
       }}
     >
-      {inspirationData.map((item) => (
+      {inspirationData?.map((item) => (
         <div
           key={item._id}
           style={{
@@ -112,7 +112,7 @@ function InpirationCard({ inspirationData }) {
           <div
             style={{ display: "flex", justifyContent: "center", gap: "5px",overflowX:'scroll' }}
           >
-            {item.tags.map((data, index) => (
+            {item.tags?.map((data, index) => (
               <Tag
                 size="sm"
                 key={index}

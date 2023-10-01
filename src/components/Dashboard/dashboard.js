@@ -45,14 +45,18 @@ function Dashboard() {
   const [popularTags, setPopularTags] = useState([]);
   const [selectedTab, setSelectedTab] = useState("");
   const [selectedTripsData, setSelectedTripsData] = useState([]);
+  const [tripChanges, setTripChanges] = useState("");
   useEffect(() => {
     getAllInspirations();
     getPopularTags();
     getTrips();
   }, []);
+  useEffect(() => {
+    getTrips();
+  }, [tripChanges]);
   const getTripByTripId = async (data) => {
     setSelectedTab("Trips");
-    setSelectedTripsData(data)
+    setSelectedTripsData(data);
   };
   const getTrips = async () => {
     const response = await getApi("/api/v1/itinerary");
@@ -220,10 +224,19 @@ function Dashboard() {
                     </Button>
                   </GridItem>
                   <GridItem w="100%" h="16" bg="">
-                    <FontAwesomeIcon
-                      style={{ fontSize: "40px" }}
-                      icon="fa-solid fa-face-smile"
-                    />
+                    <Box
+                      style={{
+                        backgroundColor: "black",
+                        border: "3px black solid",
+                        borderRadius: "90%",
+                        maxWidth: "max-content",
+                      }}
+                    >
+                      <FontAwesomeIcon
+                        style={{ fontSize: "40px", color: "white" }}
+                        icon="fa-solid fa-face-smile"
+                      />
+                    </Box>
                   </GridItem>
                 </Grid>
               </GridItem>
@@ -317,7 +330,11 @@ function Dashboard() {
                   </GridItem>{" "}
                 </>
               ) : (
-                <AddInspirationToTrip selectedTripsData={selectedTripsData} setSelectedTab={setSelectedTab}/>
+                <AddInspirationToTrip
+                  selectedTripsData={selectedTripsData}
+                  setSelectedTab={setSelectedTab}
+                  setTripChanges={setTripChanges}
+                />
               )}
             </Grid>
           </GridItem>
@@ -327,7 +344,11 @@ function Dashboard() {
         isOpen={addInspirationOpen}
         onClose={() => setAddInspirationOpen(false)}
       />
-      <AddTrip isOpen={addTripOpen} onClose={() => setAddTripOpen(false)} />
+      <AddTrip
+        isOpen={addTripOpen}
+        onClose={() => setAddTripOpen(false)}
+        setTripChanges={setTripChanges}
+      />
     </>
   );
 }
