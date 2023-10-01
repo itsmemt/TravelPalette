@@ -12,6 +12,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function InpirationCard({ inspirationData }) {
   const generateEmbedCode = (link) => {
     if (link.includes("youtube.com")) {
+      // It's a YouTube link, extract the video ID
+
+      console.log(
+        "https://www.youtube.com/watch?v=Y7_1rCuioeI"
+          .split("/watch?v=")[1]
+          ?.split("&")?.[0]
+      ); 
+      
       const videoIdMatch = link.match(/v=([a-zA-Z0-9_-]+)/);
       if (videoIdMatch) {
         const videoId = videoIdMatch[1];
