@@ -6,7 +6,7 @@ import PageNotFound from "./components/pageNotFound";
 import Home from "./components/Home/Home";
 function App() {
   return (
-    <Router>
+      <Router>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="*" element={<PageNotFound/>} />

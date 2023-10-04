@@ -9,7 +9,7 @@ import {
   Tag,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-function InpirationCard({ inspirationData }) {
+function InpirationCard({ inspirationData, delInspiration }) {
   const generateEmbedCode = (link) => {
     if (link?.includes("youtube.com")) {
       // It's a YouTube link, extract the video ID
@@ -32,7 +32,7 @@ function InpirationCard({ inspirationData }) {
           ></iframe>
         );
       }
-    } else if (link?.includes("instagram.com")) {
+    } else if (link?.includes("instagram.com/p/")) {
       // It's an Instagram link, extract the post ID
       const postMatch = link.match(/\/p\/([a-zA-Z0-9_-]+)/);
       if (postMatch) {
@@ -43,6 +43,27 @@ function InpirationCard({ inspirationData }) {
             height="300px"
             src={`https://www.instagram.com/p/${postId}/embed`}
             title="Embedded Instagram post"
+            frameBorder="0"
+            allowFullScreen
+            style={{
+              height: "300px",
+              borderTopLeftRadius: "30px",
+              borderTopRightRadius: "30px",
+            }}
+          ></iframe>
+        );
+      }
+    } else if (link?.includes("instagram.com/reel/")) {
+      // It's an Instagram reel link, extract the reel ID
+      const reelMatch = link.match(/\/reel\/([a-zA-Z0-9_-]+)/);
+      if (reelMatch) {
+        const reelId = reelMatch[1];
+        // Construct the Instagram embed code for reels
+        return (
+          <iframe
+            height="300px"
+            src={`https://www.instagram.com/reel/${reelId}/embed`}
+            title="Embedded Instagram Reel"
             frameBorder="0"
             allowFullScreen
             style={{
@@ -76,7 +97,7 @@ function InpirationCard({ inspirationData }) {
         display: "grid",
         gridTemplateColumns: "repeat(3,1fr)",
         gap: "10px",
-        overflowY:'scroll'
+        overflowY: "scroll",
       }}
     >
       {inspirationData?.map((item) => (
@@ -88,29 +109,50 @@ function InpirationCard({ inspirationData }) {
             gridTemplateColumns: "repeat(1,1fr)",
             borderRadius: "30px",
             height: "500px",
-            maxWidth:'300px'
+            maxWidth: "300px",
           }}
         >
-          <div style={{ position: "relative" }}>
-            <Link
-              href={item.content}
-              isExternal
-              style={{
-                position: "absolute",
-                right: "15px",
-                color: "blueviolet",
-                fontSize: "2rem",
-              }}
-            >
-              <FontAwesomeIcon icon="fa-solid fa-square-arrow-up-right" />
-            </Link>
+          <div>
+            <div style={{ position: "relative" }}>
+              {" "}
+              <FontAwesomeIcon
+                icon="fa-solid fa-trash"
+                style={{
+                  color: "#d12310",
+                  position: "absolute",
+                  top: "10px",
+                  right: "55px",
+                  // fontSize: "2rem",
+                  height: "28px",
+                }}
+                onClick={() => delInspiration(item._id ? item._id : 500)}
+              />
+              <Link
+                href={item.content}
+                isExternal
+                style={{
+                  position: "absolute",
+                  right: "15px",
+                  color: "blueviolet",
+                  fontSize: "2rem",
+                  height: "28px",
+                }}
+              >
+                <FontAwesomeIcon icon="fa-solid fa-square-arrow-up-right" />
+              </Link>
+            </div>
             {generateEmbedCode(item.content)}
           </div>
           <Heading as="h4" style={{ textAlign: "center", fontSize: "1.2rem" }}>
             {item.title}
           </Heading>
           <div
-            style={{ display: "flex", justifyContent: "center", gap: "5px",overflowX:'scroll' }}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "5px",
+              overflowX: "scroll",
+            }}
           >
             {item.tags?.map((data, index) => (
               <Tag

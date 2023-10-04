@@ -16,7 +16,7 @@ import {
   ModalContent,
   ModalBody,
   ModalCloseButton,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InspirationCard from "./InspirationCard";
@@ -83,7 +83,11 @@ const generateEmbedCode = (link) => {
     ></iframe>
   );
 };
-function AddInspirationToTrip({ selectedTripsData, setSelectedTab,setTripChanges }) {
+function AddInspirationToTrip({
+  selectedTripsData,
+  setSelectedTab,
+  setTripChanges,
+}) {
   const toast = useToast();
   const [updatedTrip, setUpdatedTrip] = useState(selectedTripsData.item);
   const [addTripOpen, setAddTripOpen] = useState(false);
@@ -124,8 +128,8 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab,setTripChanges
   }, [updatedTrip]);
 
   const handleDelete = async (id) => {
-    const response = await DeleteTrips(id)
-    if(response){
+    const response = await DeleteTrips(id);
+    if (response) {
       toast({
         description: response.message,
         status: response.status,
@@ -230,11 +234,13 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab,setTripChanges
                         borderRadius: "30px",
                       }}
                     >
-                      <div key={inspiration._id}
-                       style={{
-                        height: "500px",
-                        maxWidth: "300px",
-                      }}>
+                      <div
+                        key={inspiration._id}
+                        style={{
+                          height: "500px",
+                          maxWidth: "300px",
+                        }}
+                      >
                         <div style={{ position: "relative" }}>
                           <Link
                             href={inspiration.content}
@@ -252,11 +258,11 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab,setTripChanges
                             icon="fa-solid fa-circle-check"
                             style={{
                               position: "absolute",
-                              right: "-35px",
+                              left: "2px",
                               fontSize: "2rem",
                               color: selectedInspiration?.includes(inspiration)
-                              ? "black"
-                              : "gray",
+                                ? "black"
+                                : "gray",
                             }}
                             onClick={() => handleInspirationClick(inspiration)}
                           />
@@ -264,7 +270,11 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab,setTripChanges
                         </div>
                         <Heading
                           as="h4"
-                          style={{ textAlign: "center", fontSize: "1.2rem" }}
+                          style={{
+                            textAlign: "center",
+                            fontSize: "1.2rem",
+                            padding: "4px",
+                          }}
                         >
                           {inspiration.title}
                         </Heading>
@@ -274,6 +284,8 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab,setTripChanges
                             justifyContent: "center",
                             gap: "5px",
                             overflowX: "scroll",
+                            height: "80px",
+                            padding:"4px"
                           }}
                         >
                           {inspiration.tags?.map((data, index) => (
@@ -310,6 +322,7 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab,setTripChanges
                               width: "80%",
                               margin: "auto",
                               fontSize: "12px",
+                              marginTop:"10px"
                             }}
                             size="md"
                           >
@@ -364,10 +377,10 @@ function AddInspirationToTrip({ selectedTripsData, setSelectedTab,setTripChanges
               />
             </Flex>
           </Flex>
-          </HStack>
+        </HStack>
         {updatedTrip?.length > 0 && (
           <InspirationCard inspirationData={updatedTrip} />
-          )}
+        )}
       </Box>
       <AddTrip
         isOpen={addTripOpen}

@@ -19,6 +19,7 @@ import {
   Tag,
   InputRightElement,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import {
   searchInspiration,
@@ -31,8 +32,10 @@ import getAllInspiration from "../Api/getInspiration";
 import InpirationCard from "./InspirationCard";
 import AddInspirationToTrip from "./addInspirationToTrip";
 import getApi from "../Api/getApi";
-
+import data from "../Home/data";
+import DeleteInspiration from "../Api/deleteInspiration";
 function Dashboard() {
+  const toast = useToast();
   const navigate = useNavigate();
   let { currentUser, SignOut } = useContext(AuthContext);
   const [addInspirationOpen, setAddInspirationOpen] = useState(false);
@@ -68,9 +71,35 @@ function Dashboard() {
   };
   const getAllInspirations = async (tab) => {
     setSelectedTab(tab);
+    if (tab === "Home") {
+      setInspirationData(data);
+    } else {
+      const response = await getAllInspiration();
+      setInspirationData(response.data);
+    }
+  };
+  const deleteInspirations = async (ID) => {
+    const res = await DeleteInspiration(ID);
+    console.log(res);
+    if (res.status === "success") {
+      toast({
+        description: res.message,
+        status: res.status,
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        description: "Something went wrong",
+        status: res.status,
+        duration: 5000,
+        isClosable: true,
+      });
+    }
     const response = await getAllInspiration();
     setInspirationData(response.data);
   };
+
   const handleSearch = async (event) => {
     if (event.key === "Enter") {
       if (activeField === "inspiration") {
@@ -86,6 +115,8 @@ function Dashboard() {
     SignOut();
     navigate("/");
   }
+  useEffect(() => {}, [inspirationData]);
+
   return (
     <>
       <Box>
@@ -326,7 +357,12 @@ function Dashboard() {
                     </Grid>
                   </GridItem>
                   <GridItem w="100%" bg="" style={{ overflowY: "scroll" }}>
-                    <InpirationCard inspirationData={inspirationData} />
+                    <InpirationCard
+                      inspirationData={
+                        selectedTab === "Home" ? data : inspirationData
+                      }
+                      delInspiration={deleteInspirations}
+                    />
                   </GridItem>{" "}
                 </>
               ) : (
