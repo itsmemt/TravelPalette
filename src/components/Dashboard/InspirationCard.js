@@ -1,4 +1,5 @@
-import React from "react";
+import React,{useState} from "react";
+import "./dashboard.css";
 import {
   TagLabel,
   Tooltip,
@@ -9,7 +10,18 @@ import {
   Tag,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-function InpirationCard({ inspirationData, delInspiration }) {
+import AddInspiration from "./addInspiration";
+function InpirationCard({
+  inspirationData,
+  delInspiration,
+  accessButton,
+}) {
+  const [addInspirationOpen, setAddInspirationOpen] = useState(false);
+  const [selectedInspiration, setSelectedInspiration] = useState('');
+  const handleUpdateInspiration = (data) =>{
+    setAddInspirationOpen(true);
+    setSelectedInspiration(data)
+  }
   const generateEmbedCode = (link) => {
     if (link?.includes("youtube.com")) {
       // It's a YouTube link, extract the video ID
@@ -80,7 +92,6 @@ function InpirationCard({ inspirationData, delInspiration }) {
       <iframe
         src={link}
         title="Link Preview"
-        height="400px"
         frameBorder="0"
         sandbox="allow-same-origin allow-scripts"
         style={{
@@ -103,6 +114,7 @@ function InpirationCard({ inspirationData, delInspiration }) {
       {inspirationData?.map((item) => (
         <div
           key={item._id}
+          className="inspiration_card"
           style={{
             border: "1px solid black",
             display: "grid",
@@ -113,32 +125,51 @@ function InpirationCard({ inspirationData, delInspiration }) {
           }}
         >
           <div>
-            <div style={{ position: "relative" }}>
-              {" "}
-              <FontAwesomeIcon
-                icon="fa-solid fa-trash"
-                style={{
-                  color: "#d12310",
-                  position: "absolute",
-                  top: "10px",
-                  right: "55px",
-                  // fontSize: "2rem",
-                  height: "28px",
-                }}
-                onClick={() => delInspiration(item._id ? item._id : 500)}
-              />
-              <Link
-                href={item.content}
-                isExternal
-                style={{
-                  position: "absolute",
-                  right: "15px",
-                  color: "blueviolet",
-                  fontSize: "2rem",
-                  height: "28px",
-                }}
-              >
-                <FontAwesomeIcon icon="fa-solid fa-square-arrow-up-right" />
+            <div
+              style={{ position: "relative" }}
+              className="inspiration_access_btn"
+            >
+              {accessButton ? (
+                <FontAwesomeIcon
+                  icon="fa-solid fa-trash"
+                  style={{
+                    color: "#d12310",
+                    position: "absolute",
+                    top: "10px",
+                    right: "85px",
+                    height: "28px",
+                  }}
+                  onClick={() => delInspiration(item._id ? item._id : 500)}
+                />
+              ) : (
+                <></>
+              )}
+              {accessButton ? (
+                <FontAwesomeIcon
+                  icon="fa-solid fa-square-pen"
+                  style={{
+                    color: "#aaa9",
+                    position: "absolute",
+                    top: "10px",
+                    right: "55px",
+                    height: "28px",
+                  }}
+                  onClick={() => handleUpdateInspiration(item)}
+                />
+              ) : (
+                <></>
+              )}
+              <Link href={item.content} isExternal>
+                <FontAwesomeIcon
+                  icon="fa-solid fa-square-arrow-up-right"
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "15px",
+                    color: "blueviolet",
+                    height: "28px",
+                  }}
+                />
               </Link>
             </div>
             {generateEmbedCode(item.content)}
@@ -193,6 +224,11 @@ function InpirationCard({ inspirationData, delInspiration }) {
           </HStack>
         </div>
       ))}
+      <AddInspiration
+        isOpen={addInspirationOpen}
+        onClose={() => setAddInspirationOpen(false)}
+        selectedInspiration={selectedInspiration}
+      />
     </div>
   );
 }

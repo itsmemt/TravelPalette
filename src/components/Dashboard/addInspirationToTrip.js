@@ -24,6 +24,8 @@ import AddTrip from "./addTrip";
 import getInspiration from "../Api/getInspiration";
 import updateTrips from "../Api/updateTrips";
 import DeleteTrips from "../Api/deleteTrips";
+import getTripByTripId from "../Api/getTripById";
+
 const generateEmbedCode = (link) => {
   if (link?.includes("youtube.com")) {
     const videoIdMatch = link.match(/v=([a-zA-Z0-9_-]+)/);
@@ -90,6 +92,15 @@ function AddInspirationToTrip({
 }) {
   const toast = useToast();
   const [updatedTrip, setUpdatedTrip] = useState(selectedTripsData.item);
+  useEffect(() => {
+    const getTripById = async ()=>{
+      const response = await getTripByTripId(selectedTripsData._id);
+      if(response){
+        setUpdatedTrip(response.data.item)
+      }
+    }
+    getTripById();
+  }, [selectedTripsData._id]);
   const [addTripOpen, setAddTripOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [inspirations, setInspirations] = useState([]);
@@ -137,6 +148,7 @@ function AddInspirationToTrip({
         isClosable: true,
       });
     }
+    setTripChanges(Math.random());
     setSelectedTab("Home");
   };
   function formatDate(inputDate) {
@@ -258,7 +270,7 @@ function AddInspirationToTrip({
                             icon="fa-solid fa-circle-check"
                             style={{
                               position: "absolute",
-                              left: "2px",
+                              right: "-38px",
                               fontSize: "2rem",
                               color: selectedInspiration?.includes(inspiration)
                                 ? "black"
@@ -347,8 +359,11 @@ function AddInspirationToTrip({
         selectedTripsData={selectedTripsData}
         setTripChanges={setTripChanges}
       />
-      <Box>
-        <HStack style={{ margin: "10px" }}>
+      <Box style={{ margin: "10px" }}>
+        {updatedTrip?.length > 0 && (
+          <InspirationCard inspirationData={updatedTrip} />
+        )}
+        <HStack style={{ marginTop: "10px" }}>
           <Flex
             w="250px"
             h="350"
@@ -378,9 +393,6 @@ function AddInspirationToTrip({
             </Flex>
           </Flex>
         </HStack>
-        {updatedTrip?.length > 0 && (
-          <InspirationCard inspirationData={updatedTrip} />
-        )}
       </Box>
       <AddTrip
         isOpen={addTripOpen}

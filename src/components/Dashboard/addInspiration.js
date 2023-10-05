@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Box,
   Textarea,
@@ -22,10 +22,9 @@ import {
   useToast
 } from "@chakra-ui/react";
 import { saveInspiration } from "../Api/saveInspiration";
+import updateInspiration from "../Api/updateInspiration";
 
-function AddInspiration({ isOpen, onClose }) {
-  const toast = useToast();
-  const [tag, setTag] = useState([]);
+function AddInspiration({ isOpen, onClose,selectedInspiration, setInspirationUpdated }) {
   const [formData, setFormData] = useState({
     title: null,
     content: null,
@@ -33,24 +32,53 @@ function AddInspiration({ isOpen, onClose }) {
     description: "",
     tags: [],
   });
+  const toast = useToast();
+  const [tag, setTag] = useState([]);
+  useEffect(()=>{
+    if (selectedInspiration) {
+      setFormData({
+        id: selectedInspiration._id,
+        title: selectedInspiration.title,
+        location: selectedInspiration.location,
+        content: selectedInspiration.content,
+        description: selectedInspiration.description,
+        tags: selectedInspiration.tags
+      });
+      setTag(selectedInspiration.tags);
+    }
+  },[selectedInspiration]);
   const handleSaveInspiration = async () => {
     const payload= {...formData,tags:tag}
-    const response = await saveInspiration(payload);
-    if(response.status==='success'){
-      setFormData({
-        title: null,
-        content: null,
-        location: null,
-        description: "",
-        tags: [],
-      })
-      onClose();
-      toast({
-        description:response.message,
-        status: response.status,
-        duration: 5000,
-        isClosable: true,
-      });
+    if(selectedInspiration){
+      const response = await updateInspiration(payload);
+      if(response.status==='success'){
+        onClose();
+        toast({
+          description:response.message,
+          status: response.status,
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } else{
+      const response = await saveInspiration(payload);
+      if(response.status==='success'){
+        setFormData({
+          title: null,
+          content: null,
+          location: null,
+          description: "",
+          tags: [],
+        })
+        onClose();
+        toast({
+          description:response.message,
+          status: response.status,
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+      setInspirationUpdated(Math.random());
     }
   };
   function handleSelectedTags(e) {
@@ -91,7 +119,7 @@ function AddInspiration({ isOpen, onClose }) {
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Inspiration</ModalHeader>
+        <ModalHeader>{selectedInspiration ? 'Update ':'Add '}Inspiration</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box>
@@ -99,6 +127,7 @@ function AddInspiration({ isOpen, onClose }) {
               <Input
                 placeholder="Add Title"
                 size="md"
+                value={formData.title}
                 onChange={(e) =>
                   setFormData({ ...formData, title: e.target.value })
                 }
@@ -107,6 +136,7 @@ function AddInspiration({ isOpen, onClose }) {
               <Input
                 placeholder="Add Location"
                 size="md"
+                value={formData.location}
                 onChange={(e) =>
                   setFormData({ ...formData, location: e.target.value })
                 }
@@ -115,6 +145,7 @@ function AddInspiration({ isOpen, onClose }) {
               <Input
                 placeholder="Add Link (Youtube, Instagram, Tiktok, Blog) (Optional)"
                 size="md"
+                value={formData.content}
                 onChange={(e) =>
                   setFormData({ ...formData, content: e.target.value })
                 }
@@ -155,14 +186,14 @@ function AddInspiration({ isOpen, onClose }) {
           </Box>
         </ModalBody>
         <ModalFooter>
-          {/* <Button
+          <Button
             colorScheme="gray"
             mr={3}
             onClick={onClose}
             style={{ borderRadius: "20px" }}
           >
             Cancel
-          </Button> */}
+          </Button>
           <Button
             onClick={()=>handleSaveInspiration()}
             style={{
@@ -171,7 +202,7 @@ function AddInspiration({ isOpen, onClose }) {
               borderRadius: "20px",
             }}
           >
-            Save
+            {selectedInspiration ? 'Save Changes':'Save'}
           </Button>
         </ModalFooter>
       </ModalContent>

@@ -1,0 +1,7 @@
+.inspiration_card .inspiration_access_btn{
+    display: none;
+}
+.inspiration_card:hover .inspiration_access_btn{
+    background-color: #000 ;
+    display: block;
+}

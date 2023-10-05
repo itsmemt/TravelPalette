@@ -102,7 +102,7 @@ function AddTrip({ isOpen, onClose, selectedTripsData ,setTripChanges}) {
               <Divider orientation="horizontal" />
               <HStack>
                 <Heading as="h6" size="sm">
-                  Where To ?
+                  Where to?
                 </Heading>
                 <Input
                   style={{ width: "80%" }}
@@ -117,7 +117,7 @@ function AddTrip({ isOpen, onClose, selectedTripsData ,setTripChanges}) {
               <Divider orientation="horizontal" />
               <HStack>
                 <Heading as="h6" size="sm" style={{ marginRight: "20px" }}>
-                  Dates_?
+                  Dates?
                 </Heading>
                 <Heading as="h6" size="sm" style={{ marginRight: "20px" }}>
                   Start

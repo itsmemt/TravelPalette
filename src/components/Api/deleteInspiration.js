@@ -12,14 +12,12 @@ export default async function DeleteInspiration(inspirationId) {
     );
     if (!response.ok) {
       const errorData = await response.json();
-      console.log("first",errorData)
       // Display the error message in a toast notification
       return errorData;
       throw new Error("Something went Wrong.Try Again.");
     }
     return response.json();
   } catch (error) {
-    console.log("ft",error)
     return error.status;
     throw new Error("API request error: " + error.message);
   }

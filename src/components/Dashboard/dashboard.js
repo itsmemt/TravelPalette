@@ -33,7 +33,7 @@ import InpirationCard from "./InspirationCard";
 import AddInspirationToTrip from "./addInspirationToTrip";
 import smileLogo from "../Images/smileLogo.svg";
 import getApi from "../Api/getApi";
-import data from "../Home/data";
+import dummyData from "../Home/data";
 import DeleteInspiration from "../Api/deleteInspiration";
 function Dashboard() {
   const toast = useToast();
@@ -50,14 +50,27 @@ function Dashboard() {
   const [selectedTab, setSelectedTab] = useState("");
   const [selectedTripsData, setSelectedTripsData] = useState([]);
   const [tripChanges, setTripChanges] = useState("");
+  const [accessButton, setAccessButton] = useState(false);
+  const [inspirationUpdated, setInspirationUpdated] = useState('');
   useEffect(() => {
     getAllInspirations();
+    setSelectedTab('Home')
     getPopularTags();
     getTrips();
   }, []);
   useEffect(() => {
+    if(selectedTab==="My Inspirations"){
+      setAccessButton(true);
+    } else{
+      setAccessButton(false);
+    }
+  }, [selectedTab]);
+  useEffect(() => {
     getTrips();
   }, [tripChanges]);
+  useEffect(() => {
+    getAllInspirations();
+  }, [inspirationUpdated]);
   const getTripByTripId = async (data) => {
     setSelectedTab("Trips");
     setSelectedTripsData(data);
@@ -71,9 +84,11 @@ function Dashboard() {
     setPopularTags(response.data);
   };
   const getAllInspirations = async (tab) => {
-    setSelectedTab(tab);
-    if (tab === "Home") {
-      setInspirationData(data);
+    if(tab){
+      setSelectedTab(tab);
+    }
+    if (selectedTab && tab === "Home") {
+      setInspirationData(dummyData);
     } else {
       const response = await getAllInspiration();
       setInspirationData(response.data);
@@ -81,7 +96,6 @@ function Dashboard() {
   };
   const deleteInspirations = async (ID) => {
     const res = await DeleteInspiration(ID);
-    console.log(res);
     if (res.status === "success") {
       toast({
         description: res.message,
@@ -128,11 +142,10 @@ function Dashboard() {
             bg=""
             style={{ borderRight: "1px solid grey" }}
           >
-            <HStack style={{ marginTop: "10px", marginBottom: "20px" }}>
+            <HStack style={{ marginTop: "10px", marginBottom: "20px" ,marginLeft:'2px'}}>
               <Image
                 src={travelPaletteLogo}
                 alt="Travel Palette"
-                style={{ backgroundColor: "black" }}
               />
               <Heading as="h3" size="lg">
                 TravelPalette.me
@@ -265,7 +278,7 @@ function Dashboard() {
               {selectedTab !== "Trips" ? (
                 <>
                   <GridItem w="100%" h="14" bg="">
-                    <Grid templateColumns="25% 22% 20% 10% 10% 10%" gap={2}>
+                    <Grid templateColumns="23% 23% 20% 34%" gap={2}>
                       <GridItem w="100%" h="10" bg="">
                         <InputGroup>
                           <Input
@@ -303,7 +316,7 @@ function Dashboard() {
                           <InputRightElement>
                             <Select
                               size="sm"
-                              style={{ paddingRight: "10px" }}
+                              style={{ paddingRight: "10px" ,outline:'none',border:'none'}}
                               onChange={(e) => setFilterTags(e.target.value)}
                             >
                               <option value=""></option>
@@ -323,10 +336,10 @@ function Dashboard() {
                           Popular Searches
                         </Heading>
                       </GridItem>
-                      <GridItem w="300%" h="10" bg="">
-                        <HStack spacing={4}>
+                      <GridItem w="100%" h="10" bg="">
+                        <HStack spacing={4} style={{marginTop:'8px'}}>
                           {popularTags.length > 0 ? (
-                            popularTags.slice(0, 3).map((item, index) => (
+                            popularTags.slice(0, 2).map((item, index) => (
                               <Tooltip label={item.name}>
                                 <Tag
                                   size="lg"
@@ -347,11 +360,12 @@ function Dashboard() {
                       </GridItem>
                     </Grid>
                   </GridItem>
-                  <GridItem w="100%" bg="" style={{ overflowY: "scroll" }}>
+                  <GridItem w="100%" bg="">
                     <InpirationCard
                       inspirationData={
-                        selectedTab === "Home" ? data : inspirationData
+                        selectedTab === "Home" ? dummyData : inspirationData
                       }
+                      accessButton={accessButton}
                       delInspiration={deleteInspirations}
                     />
                   </GridItem>{" "}
@@ -370,6 +384,7 @@ function Dashboard() {
       <AddInspiration
         isOpen={addInspirationOpen}
         onClose={() => setAddInspirationOpen(false)}
+        setInspirationUpdated={setInspirationUpdated}
       />
       <AddTrip
         isOpen={addTripOpen}
