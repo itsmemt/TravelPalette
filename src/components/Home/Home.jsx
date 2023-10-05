@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import travelPaletteLogo from "../Images/paletteLogo.png";
+import travelPaletteLogo from "../Images/paletteLogo.svg";
+import smileLogo from "../Images/smileLogo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SignUp from "../Signup/register";
 import SignIn from "../SignIn/signIn";
@@ -42,12 +43,14 @@ function Home() {
           bg=""
           style={{ borderRight: "1px solid grey" }}
         >
-          <HStack style={{ marginTop: "10px", marginBottom: "20px" }}>
-            <Image
-              src={travelPaletteLogo}
-              alt="Travel Palette"
-              style={{ backgroundColor: "black" }}
-            />
+          <HStack
+            style={{
+              marginTop: "10px",
+              marginBottom: "20px",
+              marginLeft: "2px",
+            }}
+          >
+            <Image src={travelPaletteLogo} alt="Travel Palette" />
             <Heading as="h3" size="lg">
               TravelPalette.me
             </Heading>
@@ -154,12 +157,9 @@ function Home() {
                   </Button>
                 </GridItem>
                 <GridItem w="100%" h="16" bg="">
-                <Box  style={{backgroundColor:'black',border:'3px black solid',borderRadius:'90%',maxWidth:'max-content' }}>
-                    <FontAwesomeIcon
-                      style={{ fontSize: "40px",color:'white'}}
-                      icon="fa-solid fa-face-smile"
-                    />
-                    </Box>
+                  <Box>
+                    <Image src={smileLogo} alt="Profile" />
+                  </Box>
                 </GridItem>
               </Grid>
             </GridItem>
@@ -205,7 +205,7 @@ function Home() {
               </Grid>
             </GridItem>
             <GridItem w="100%" h="auto" bg="">
-            <InpirationCard inspirationData={inspirationData} />
+              <InpirationCard inspirationData={inspirationData} />
             </GridItem>
           </Grid>
         </GridItem>

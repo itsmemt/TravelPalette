@@ -27,10 +27,11 @@ import {
 } from "../Api/searchInspiration";
 import AddInspiration from "./addInspiration";
 import AddTrip from "./addTrip";
-import travelPaletteLogo from "../Images/paletteLogo.png";
+import travelPaletteLogo from "../Images/paletteLogo.svg";
 import getAllInspiration from "../Api/getInspiration";
 import InpirationCard from "./InspirationCard";
 import AddInspirationToTrip from "./addInspirationToTrip";
+import smileLogo from "../Images/smileLogo.svg";
 import getApi from "../Api/getApi";
 import data from "../Home/data";
 import DeleteInspiration from "../Api/deleteInspiration";
@@ -255,20 +256,10 @@ function Dashboard() {
                     </Button>
                   </GridItem>
                   <GridItem w="100%" h="16" bg="">
-                    <Box
-                      style={{
-                        backgroundColor: "black",
-                        border: "3px black solid",
-                        borderRadius: "90%",
-                        maxWidth: "max-content",
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        style={{ fontSize: "40px", color: "white" }}
-                        icon="fa-solid fa-face-smile"
-                      />
-                    </Box>
-                  </GridItem>
+                  <Box>
+                    <Image src={smileLogo} alt="Profile" />
+                  </Box>
+                </GridItem>
                 </Grid>
               </GridItem>
               {selectedTab !== "Trips" ? (
